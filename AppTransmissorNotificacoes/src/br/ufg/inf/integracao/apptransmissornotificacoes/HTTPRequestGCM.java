@@ -13,10 +13,11 @@ import org.json.JSONObject;
 public class HTTPRequestGCM {
 	
 	private final static String GCM_URL = "https://android.googleapis.com/gcm/send";
-	private final static String API_KEY = "AIzaSyAaxTEF85KgN7mLoIUSqbtoCX5jRalOQLk";
+	private final static String API_KEY = "";
 	
+
 	public static void main(String[] args) {
-		System.out.println("Teste requisição");
+		System.out.println("Teste requisiï¿½ï¿½o");
 		enviaNotificacaoGCM();
 	}
 	
@@ -31,7 +32,13 @@ public class HTTPRequestGCM {
 			conexao.setDoOutput(true);
 			
 			JSONObject objeto = new JSONObject();
-			objeto.put("data", "mensagem");
+			JSONObject data = new JSONObject();
+			data.put("mensagem", "mensagem");
+			objeto.put("data", data);
+			String regId1 = "";
+			String regId2 = "";
+			//objeto.put("registration_ids", (new String[]{"a","b"}));
+			objeto.put("registration_ids", (new String[]{regId1}));
 			
 			DataOutputStream writer = new DataOutputStream(conexao.getOutputStream());
 			writer.writeBytes(objeto.toString());
@@ -40,7 +47,7 @@ public class HTTPRequestGCM {
 			
 			
 			int responseCode = conexao.getResponseCode();
-            System.out.println("Código Resposta: " + responseCode);
+            System.out.println("Cï¿½digo Resposta: " + responseCode);
  
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(conexao.getInputStream()));
