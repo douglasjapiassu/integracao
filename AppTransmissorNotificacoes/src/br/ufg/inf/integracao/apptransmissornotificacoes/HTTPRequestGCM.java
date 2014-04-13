@@ -10,14 +10,21 @@ import java.net.URL;
 
 import org.json.JSONObject;
 
+import com.google.android.gcm.server.Message;
+import com.google.android.gcm.server.Result;
+import com.google.android.gcm.server.Sender;
+
 public class HTTPRequestGCM {
 	
 	private final static String GCM_URL = "https://android.googleapis.com/gcm/send";
-	private final static String API_KEY = "AIzaSyAaxTEF85KgN7mLoIUSqbtoCX5jRalOQLk";
+	private final static String API_KEY = "";
+	private final static String REG_ID = "";
 	
+
 	public static void main(String[] args) {
-		System.out.println("Teste requisição");
-		enviaNotificacaoGCM();
+		System.out.println("Teste requisiï¿½ï¿½o");
+		//enviaNotificacaoGCM();
+		enviaNotificacaoGCMSender();
 	}
 	
 	public static void enviaNotificacaoGCM() {
@@ -31,7 +38,13 @@ public class HTTPRequestGCM {
 			conexao.setDoOutput(true);
 			
 			JSONObject objeto = new JSONObject();
-			objeto.put("data", "mensagem");
+			JSONObject data = new JSONObject();
+			data.put("mensagem", "mensagem");
+			objeto.put("data", data);
+			String regId1 = "";
+			String regId2 = "";
+			//objeto.put("registration_ids", (new String[]{"a","b"}));
+			objeto.put("registration_ids", (new String[]{regId1}));
 			
 			DataOutputStream writer = new DataOutputStream(conexao.getOutputStream());
 			writer.writeBytes(objeto.toString());
@@ -40,7 +53,7 @@ public class HTTPRequestGCM {
 			
 			
 			int responseCode = conexao.getResponseCode();
-            System.out.println("Código Resposta: " + responseCode);
+            System.out.println("Cï¿½digo Resposta: " + responseCode);
  
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(conexao.getInputStream()));
@@ -58,6 +71,31 @@ public class HTTPRequestGCM {
 		} catch (IOException e) {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
 		}
+	}
+	
+	public static void enviaNotificacaoGCMSender(){
+		Sender sender = new Sender(API_KEY);
+		
+		Message message = new Message.Builder()
+		   .collapseKey("1")
+		   .timeToLive(3)
+		   .delayWhileIdle(true)
+		   .addData("mensagem","Mensagem enviada pelo GCM.")
+		   .build();
+		
+		Result result = null;
+		
+		//metodo send envia a mensagem e retorna a resposta da requisicao
+		try {
+			result = sender.send(message,REG_ID, 1);
+		} catch (IOException e) {
+			System.err.println("Ocorreu o seguinte erro:\n"+e.getMessage());
+			e.printStackTrace();
+		}
+		
+		//Resposta da requisição
+		if (result != null)
+			System.out.println(result.toString());
 	}
 
 }
