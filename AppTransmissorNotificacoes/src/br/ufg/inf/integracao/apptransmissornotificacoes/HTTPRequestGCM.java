@@ -18,20 +18,14 @@ public class HTTPRequestGCM {
 	
 	private final static String GCM_URL = "https://android.googleapis.com/gcm/send";
 	private final static String API_KEY = "";
-<<<<<<< HEAD
 	private final static String REG_ID = "";
-=======
->>>>>>> refs/remotes/origin/master
 	
 
 	public static void main(String[] args) {
 		System.out.println("Teste requisiï¿½ï¿½o");
-<<<<<<< HEAD
 		//enviaNotificacaoGCM();
 		enviaNotificacaoGCMSender();
-=======
 		enviaNotificacaoGCM();
->>>>>>> refs/remotes/origin/master
 	}
 	
 	public static void enviaNotificacaoGCM() {
@@ -100,7 +94,7 @@ public class HTTPRequestGCM {
 			e.printStackTrace();
 		}
 		
-		//Resposta da requisição
+		//Resposta da requisiï¿½ï¿½o
 		if (result != null)
 			System.out.println(result.toString());
 	}
