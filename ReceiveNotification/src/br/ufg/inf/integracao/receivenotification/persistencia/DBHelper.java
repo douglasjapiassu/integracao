@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper{
 	private static final String nomeDB = "RN.db";
 	private static final int versaoDB = 1;
-	public final static Class<Notificacao> cls = Notificacao.class;
+	public final String nomeTable = "NOTIFICACOES";
 	
 	
 	public DBHelper(Context context) {
@@ -22,34 +22,20 @@ public class DBHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		Field fieldlist[] = cls.getFields();
 		String scriptCreateDB = 
-				"CREATE TABLE " + cls.getName() + " (";
-		
-		for (int i = 0; i < fieldlist.length; i++) {  
-           Field fld = fieldlist[i];
-           if (fld.getName() == "identificador") {
-        	   scriptCreateDB += 
-            		   "IDENTIFICADOR integer primary key autoincrement,";
-           } else {
-        	   if (fld.getType() == String.class) {
-        		   scriptCreateDB += fld.getName().toUpperCase() +
-        				   " text not null";
-        	   } else if (fld.getType() == Date.class) {
-        		   scriptCreateDB += fld.getName().toUpperCase() +
-        				   " date not null";
-        	   }
-           }
-	    }
-		
-		scriptCreateDB += ");";
+				"CREATE TABLE " + nomeTable + " (" +
+				"IDENTIFICADOR integer primary key autoincrement," +
+				"MENSAGEM text not null," +
+				"DATA_RECEBIMENTO long not null," +
+				"DATA datetime default current_timestamp" +
+				");";
 		
 		db.execSQL(scriptCreateDB);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + nomeDB);
+		db.execSQL("DROP TABLE IF EXISTS " + nomeTable);
         onCreate(db);
 	}
 
