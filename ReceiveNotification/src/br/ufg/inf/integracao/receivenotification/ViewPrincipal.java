@@ -99,7 +99,7 @@ public class ViewPrincipal extends Activity {
     public void imprimirNotificacao(Notificacao notificacao) {
     	tvNotificacoes = (TextView) findViewById(R.id.listaNotificacoes);
     	
-    	if(tvNotificacoes.getText().toString().equalsIgnoreCase("Nenhuma notificação cadastrada."))
+    	if(tvNotificacoes.getText().toString().equalsIgnoreCase("Nenhuma notificaï¿½ï¿½o cadastrada."))
     		tvNotificacoes.setText("");
     	
     	tvNotificacoes.setText(tvNotificacoes.getText() + "\r\n" + 

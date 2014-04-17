@@ -1,7 +1,9 @@
 package br.ufg.inf.integracao.receivenotification.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Notificacao implements Serializable {
 
@@ -15,6 +17,17 @@ public class Notificacao implements Serializable {
 		
 	}
 	
+	@Override
+	public String toString() {
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+		String data = formato.format(this.data_recebimento);
+		
+		return 
+			"Identificador: "+ this.identificador + "\n" + 
+    		"Mensagem: "+ this.mensagem + "\n"+ 
+    		"Data: "+ data;
+	}
+
 	public Notificacao(int identificador, String mensagem, Date data_recebimento) {
 		super();
 		this.identificador = identificador;

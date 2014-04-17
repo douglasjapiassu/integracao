@@ -71,7 +71,7 @@ public class DbAdapter {
 	    try {
 	    	data_recebimento = date.getTime();
 		} catch (RuntimeException e) {
-			throw new RuntimeException("(getLongDate) Data de Recebimento inválida.");
+			throw new RuntimeException("(getLongDate) Data de Recebimento invï¿½lida.");
 		}
 		
 	    return data_recebimento;
@@ -97,7 +97,7 @@ public class DbAdapter {
             return notificacoes;
          
         try {
-            if (cursor.moveToFirst()) {
+            if (cursor != null) {
             	while (cursor.moveToNext()) {
             		Notificacao notificacao = getNotificacaoPeloCursor(cursor);
                     notificacoes.add(notificacao);
