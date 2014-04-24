@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="br.ufg.inf.integracao.receivenotification.ViewPrincipal"
+            android:name="br.ufg.inf.integracao.receivenotification.views.ViewPrincipal"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +23,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="br.ufg.inf.integracao.receivenotification.ListaNotificacoes"
-            android:parentActivityName="br.ufg.inf.integracao.receivenotification.ViewPrincipal" >
+            android:name="br.ufg.inf.integracao.receivenotification.views.ViewHistoricoNotificacoes"
+            android:parentActivityName="br.ufg.inf.integracao.receivenotification.views.ViewPrincipal" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="br.ufg.inf.integracao.receivenotification.ViewPrincipal" />
+        </activity>
+        <activity
+            android:name="br.ufg.inf.integracao.receivenotification.views.ViewRegistrar"
+            android:label="@string/title_activity_view_registrar"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
     </application>
 

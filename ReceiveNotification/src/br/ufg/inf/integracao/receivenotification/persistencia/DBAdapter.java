@@ -10,12 +10,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DbAdapter {
+public class DBAdapter {
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
 	String[] colunas = new String[] { "IDENTIFICADOR", "MENSAGEM", "DATA_RECEBIMENTO", "DATA"};
 
-	public DbAdapter(Context context) {
+	public DBAdapter(Context context) {
 		dbHelper = new DBHelper(context);
 		database = dbHelper.getReadableDatabase();
 	}

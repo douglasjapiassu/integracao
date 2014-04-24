@@ -1,11 +1,12 @@
-package br.ufg.inf.integracao.receivenotification;
+package br.ufg.inf.integracao.receivenotification.views;
 
 
 import java.util.Date;
 import java.util.List;
 
+import br.ufg.inf.integracao.receivenotification.R;
 import br.ufg.inf.integracao.receivenotification.model.Notificacao;
-import br.ufg.inf.integracao.receivenotification.persistencia.DbAdapter;
+import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,12 +22,12 @@ public class ViewPrincipal extends Activity {
 	Button btnSalvar, btnCancelar, btnNovoCadastro, btnRegistrar, btnHistorico, btnVoltar;
 	EditText txtNome, txtEndereco, txtTelefone;
 	TextView tvNotificacoes;
-	DbAdapter dbAdapter;
+	DBAdapter dbAdapter;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbAdapter = new DbAdapter(this);
+        dbAdapter = new DBAdapter(this);
         loadViewPrincipal();
     }
     
@@ -38,7 +39,7 @@ public class ViewPrincipal extends Activity {
     	btnHistorico.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
 				//carregarNotificacoesSalvas(context);
-				Intent intent = new Intent(context, ListaNotificacoes.class);
+				Intent intent = new Intent(context, ViewHistoricoNotificacoes.class);
 				startActivity(intent);
 			}});
         
@@ -74,7 +75,7 @@ public class ViewPrincipal extends Activity {
     }
     
     public void salvarNotificacao() {
-    	DbAdapter dbAdapter = new DbAdapter(this);
+    	DBAdapter dbAdapter = new DBAdapter(this);
     	
     	dbAdapter.salvarNotificacao(txtTelefone.getText().toString(), new Date());
 		loadViewPrincipal();

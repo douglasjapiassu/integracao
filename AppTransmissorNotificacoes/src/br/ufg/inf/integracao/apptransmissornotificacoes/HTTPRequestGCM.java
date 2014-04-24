@@ -43,7 +43,6 @@ public class HTTPRequestGCM {
 			data.put("mensagem", "mensagem");
 			objeto.put("data", data);
 			String regId1 = "";
-			String regId2 = "";
 			//objeto.put("registration_ids", (new String[]{"a","b"}));
 			objeto.put("registration_ids", (new String[]{regId1}));
 			

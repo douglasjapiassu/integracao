@@ -1,11 +1,12 @@
-package br.ufg.inf.integracao.receivenotification;
+package br.ufg.inf.integracao.receivenotification.views;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufg.inf.integracao.receivenotification.R;
 import br.ufg.inf.integracao.receivenotification.model.Notificacao;
-import br.ufg.inf.integracao.receivenotification.persistencia.DbAdapter;
+import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
 import android.app.ListActivity;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -15,15 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ListaNotificacoes extends ListActivity {
+public class ViewHistoricoNotificacoes extends ListActivity {
     
-	DbAdapter dbAdapter;
+	DBAdapter dbAdapter;
 	Point point;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        dbAdapter = new DbAdapter(this);
+        dbAdapter = new DBAdapter(this);
         List<String> listaNotificacoes = new ArrayList<String>();
         
         for (Notificacao notificacao : dbAdapter.getNotificacoes()) {
