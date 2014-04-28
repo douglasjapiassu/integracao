@@ -1,0 +1,2 @@
+serviceClass: br.ufg.inf.integracao.sendnotification4android.client.GreetingService
+path: 2D31E1003DE87751DE15C817AFE081C7.gwt.rpc

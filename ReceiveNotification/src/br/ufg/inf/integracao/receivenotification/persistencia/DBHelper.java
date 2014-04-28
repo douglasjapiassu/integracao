@@ -1,9 +1,5 @@
 package br.ufg.inf.integracao.receivenotification.persistencia;
 
-import java.lang.reflect.Field;
-import java.util.Date;
-
-import br.ufg.inf.integracao.receivenotification.model.Notificacao;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
