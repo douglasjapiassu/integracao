@@ -1,0 +1,95 @@
+/*Folha de estilo da aplicacao demo gwt e gae*/
+
+body {
+	padding: 10px;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 18px;
+}
+
+h1 {
+	font-weight: normal;
+	font-size: 26px;
+	line-height: 38px;
+	letter-spacing: -1px;
+	margin:0; padding:0;
+	color: #D16727;
+}
+
+h2 {
+	font-weight: bold;
+	color: #404040;
+	font-size: 24px;
+	line-height: 36px;
+	margin:0; padding:0;
+}
+
+h2 small {
+	font-size: 14px;
+	color: #BFBFBF;
+}
+
+span {
+	font-size: 12px;
+	color: gray;
+}
+
+#header, #mercadoriaList, #footer {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	width: 508px;
+}
+
+#header {
+	margin-top: 50px;
+	width: 700px;
+	border-bottom: 1px solid #DDD;
+}
+
+#footer {
+	width: 700px;
+	border-top: 1px solid #DDD;
+	margin-top: 20px;
+}
+
+.listHeader {
+	background-color: #2062B8;
+	color: white;
+	font-style: italic;
+}
+.list {
+	border: 1px solid silver;
+	padding: 2px;
+	margin-bottom:6px;
+}
+
+.listTextColumn {
+	width:10em;
+}
+
+.listNumericColumn {
+	text-align: right;
+	width:8em;
+}
+
+.buttonPanel {
+	margin: 10px 0px 15px 0px;
+}
+
+.labelError {
+	color: red;
+}
+
+.logo {
+	float: left; 
+	width: 158px;
+	height:71px;
+	padding-right: 20px;
+}
+
+.title {
+	padding-bottom: 40px;
+	padding-top: 20px;
+}
