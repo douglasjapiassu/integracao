@@ -9,18 +9,16 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
 
 /**
- * Especialização de <code>FlexTable</code>, adaptado para representar uma lista de <code>Mercadoria</code>.
+ * Lista de Usu�rios
  * 
  * <p>As colunas:</p>
  * <ul>
  *   <li>ID;</li>
  *   <li>Nome;</li>
- *   <li>Descrição;</li>
- *   <li>Quantidade;</li>
- *   <li>Preço;</li>
+ *   <li>Email;</li>
  * </ul>
  * 
- * @author YaW Tecnologia
+ * @author douglasjapiassu
  */
 public class UsuarioTable extends FlexTable {
 	
@@ -98,12 +96,7 @@ public class UsuarioTable extends FlexTable {
 	private void insertRow(final int row, Usuario m) {
 		setText(row, 0, m.getId().toString());
 		setText(row, 1, m.getNome());
-		setText(row, 2, m.getDescricao());
-		setText(row, 3, m.getQuantidade().toString());
-		setText(row, 4, Usuario.convertPrecoToString(m.getPreco()));
-		
-		getCellFormatter().addStyleName(row, 3, "listNumericColumn");
-		getCellFormatter().addStyleName(row, 4, "listNumericColumn");
+		setText(row, 2, m.getEmail());
 	}
 	
 	/**
@@ -120,29 +113,21 @@ public class UsuarioTable extends FlexTable {
 	}
 	
 	/**
-	 * @return <code>Mercadoria</code> selecionada pelo usuário na tabela.
+	 * @return Usuario selecionado na tabela.
 	 */
-	public Usuario getMercadoriaSelected() {
+	public Usuario getUsuarioSelecionado() {
 		if (source == null || selectedRow == 0)
 			return null;
 		
 		return source.getRow(selectedRow-1);
 	}
 	
-	/**
-	 * Adiciona uma <code>Mercadoria</code> na tabela.
-	 * @param m
-	 */
-	public void add(Usuario m) {
-		source.add(m);
+	public void adicionar(Usuario usuario) {
+		source.add(usuario);
 		updateAll();
 	}
 	
-	/**
-	 * Remove um <code>Mercadoria</code> da tabela.
-	 * @param m
-	 */
-	public void remove(Usuario m) {
+	public void remover(Usuario m) {
 		source.remove(m);
 		updateAll();
 	}

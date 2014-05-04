@@ -1,8 +1,6 @@
 package br.ufg.inf.integracao.sendnotification4android.client;
 
 
-import java.util.Map;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;

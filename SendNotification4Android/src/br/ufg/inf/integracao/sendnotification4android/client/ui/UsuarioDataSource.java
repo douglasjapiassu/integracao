@@ -6,18 +6,13 @@ import java.util.List;
 
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
 
-/**
- * Implementa um <code>datasource</code> para <code>Mercadoria</code>.
- * 
- * @author YaW Tecnologia
- */
 public class UsuarioDataSource implements DataSource<Usuario> {	
 	
     private List<Usuario> data = new ArrayList<Usuario>();
     
-    public UsuarioDataSource(Usuario[] mercadorias) {
-    	if (mercadorias != null) {
-    		for (Usuario m: mercadorias) {
+    public UsuarioDataSource(Usuario[] usuarios) {
+    	if (usuarios != null) {
+    		for (Usuario m: usuarios) {
             	data.add(m);
             }
     	}

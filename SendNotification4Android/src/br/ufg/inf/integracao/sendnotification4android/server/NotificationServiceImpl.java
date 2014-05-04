@@ -5,9 +5,9 @@ import java.util.Map;
 
 import br.ufg.inf.integracao.sendnotification4android.client.NotificationService;
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
-import br.ufg.inf.integracao.sendnotification4android.server.dao.MercadoriaDAO;
-import br.ufg.inf.integracao.sendnotification4android.server.dao.MercadoriaDAOJDO;
-import br.ufg.inf.integracao.sendnotification4android.server.model.MercadoriaEntity;
+import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAO;
+import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAOJDO;
+import br.ufg.inf.integracao.sendnotification4android.server.model.UsuarioEntity;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
@@ -18,15 +18,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  */
 public class NotificationServiceImpl extends RemoteServiceServlet implements NotificationService {
 	
-	//private static Logger log = Logger.getLogNotificationServiceImplImpl.class);
-	
 	private static final long serialVersionUID = 1L;
-	private MercadoriaDAO dao = new MercadoriaDAOJDO();
+	private UsuarioDAO dao = new UsuarioDAOJDO();
 	
 	@Override
 	public Long add(Usuario m) {
 		try {
-			MercadoriaEntity me = dao.save(new MercadoriaEntity(m));
+			UsuarioEntity me = dao.save(new UsuarioEntity(m));
 			return me.getId();
 		} catch (RuntimeException e){
 			throw e;
@@ -46,8 +44,8 @@ public class NotificationServiceImpl extends RemoteServiceServlet implements Not
 	@Override
 	public Usuario[] getAll() {
 		try {
-	    	List<MercadoriaEntity> mercadorias = dao.getAll();
-	    	return MercadoriaEntity.toMercadoriaArray(mercadorias);
+	    	List<UsuarioEntity> mercadorias = dao.getAll();
+	    	return UsuarioEntity.toMercadoriaArray(mercadorias);
 	    } catch (RuntimeException e){
 	    	throw e;
 		}

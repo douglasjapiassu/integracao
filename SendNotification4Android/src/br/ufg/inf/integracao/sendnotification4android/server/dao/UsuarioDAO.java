@@ -2,7 +2,7 @@ package br.ufg.inf.integracao.sendnotification4android.server.dao;
 
 import java.util.List;
 
-import br.ufg.inf.integracao.sendnotification4android.server.model.MercadoriaEntity;
+import br.ufg.inf.integracao.sendnotification4android.server.model.UsuarioEntity;
 
 /**
  * Contrato de persistência para a entidade <code>Mercadoria</code>. 
@@ -11,7 +11,7 @@ import br.ufg.inf.integracao.sendnotification4android.server.model.MercadoriaEnt
  * 
  * @author YaW Tecnologia
  */
-public interface MercadoriaDAO {
+public interface UsuarioDAO {
 
 	/**
 	 * Faz a inserção ou atualização da mercadoria na base de dados.
@@ -19,7 +19,7 @@ public interface MercadoriaDAO {
 	 * @return referência atualizada do objeto.
 	 * @throws <code>RuntimeException</code> se algum problema ocorrer.
 	 */
-	MercadoriaEntity save(MercadoriaEntity me);
+	UsuarioEntity save(UsuarioEntity ue);
 	
 	/**
 	 * Exclui o registro da mercadoria na base de dados 
@@ -32,13 +32,13 @@ public interface MercadoriaDAO {
 	 * @return Lista com todas as mercadorias cadastradas no banco de dados.
 	 * @throws <code>RuntimeException</code> se algum problema ocorrer.
 	 */
-	List<MercadoriaEntity> getAll();
+	List<UsuarioEntity> getAll();
 	
 	/**
 	 * @param id chave da pesquisa.
 	 * @return Mercadoria com filtro no id, caso nao exista retorna <code>null</code>.
 	 * @throws <code>RuntimeException</code> se algum problema ocorrer.
 	 */
-	MercadoriaEntity findById(Long id);
+	UsuarioEntity findById(Long id);
 	
 }

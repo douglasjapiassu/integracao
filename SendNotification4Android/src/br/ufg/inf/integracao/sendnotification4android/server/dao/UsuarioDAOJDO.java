@@ -8,18 +8,18 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
-import br.ufg.inf.integracao.sendnotification4android.server.model.MercadoriaEntity;
+import br.ufg.inf.integracao.sendnotification4android.server.model.UsuarioEntity;
 
 /**
  * Implementa o contrato de persistência da entidade <code>Mercadoria</code>.
  *  
  * <p>Utiliza o mecanismo de persistência <code>JDO</code> para realizar as operações de cadastro de mercadorias.</p>
  * 
- * @see br.com.yaw.ggc.dao.MercadoriaDAO
+ * @see br.UsuarioDAO.yaw.ggc.dao.MercadoriaDAO
  * 
  * @author YaW Tecnologia
  */
-public class MercadoriaDAOJDO implements MercadoriaDAO {
+public class UsuarioDAOJDO implements UsuarioDAO {
 
 	/**
 	 * Factory de conexoes do JDO, veja o mapeamento no arquivo <code>jdoconfig.xml</code>.
@@ -27,7 +27,7 @@ public class MercadoriaDAOJDO implements MercadoriaDAO {
 	private static final PersistenceManagerFactory factory = JDOHelper.getPersistenceManagerFactory("ggc-pm");
 	
 	@Override
-	public MercadoriaEntity save(MercadoriaEntity me) {
+	public UsuarioEntity save(UsuarioEntity me) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			return pm.makePersistent(me);
@@ -42,7 +42,7 @@ public class MercadoriaDAOJDO implements MercadoriaDAO {
 	public void remove(Long id) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
-			MercadoriaEntity me = pm.getObjectById(MercadoriaEntity.class, id);
+			UsuarioEntity me = pm.getObjectById(UsuarioEntity.class, id);
 			pm.deletePersistent(me);	
 		} catch (Exception e){
 			throw new RuntimeException("Nao foi possivel remover mercadoria: "+e.getMessage());
@@ -52,11 +52,11 @@ public class MercadoriaDAOJDO implements MercadoriaDAO {
 	}
 
 	@Override
-	public List<MercadoriaEntity> getAll() {
+	public List<UsuarioEntity> getAll() {
 		PersistenceManager pm = getPersistenceManager();
 	    try {
-	    	Query q = pm.newQuery(MercadoriaEntity.class);
-	    	List<MercadoriaEntity> lista = (List<MercadoriaEntity>) q.execute();
+	    	Query q = pm.newQuery(UsuarioEntity.class);
+	    	List<UsuarioEntity> lista = (List<UsuarioEntity>) q.execute();
 	    	lista.size();
 	    	return lista;
 	    } catch (Exception e){
@@ -67,10 +67,10 @@ public class MercadoriaDAOJDO implements MercadoriaDAO {
 	}
 
 	@Override
-	public MercadoriaEntity findById(Long id) {
+	public UsuarioEntity findById(Long id) {
 		PersistenceManager pm = getPersistenceManager();
 		try {
-			return pm.getObjectById(MercadoriaEntity.class, id);
+			return pm.getObjectById(UsuarioEntity.class, id);
 		} catch (JDOObjectNotFoundException nex){
 			return null;
 		} catch (Exception e){

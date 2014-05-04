@@ -17,7 +17,7 @@ import com.google.gwt.event.shared.UmbrellaException;
  */
 public class SendNotification4Android implements EntryPoint {
 
-	private final NotificationServiceAsync mercadoriaService = GWT.create(NotificationService.class);
+	private final NotificationServiceAsync notificationService = GWT.create(NotificationService.class);
 
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
@@ -31,7 +31,7 @@ public class SendNotification4Android implements EntryPoint {
 			}
 		});
 		
-		new UsuarioController(mercadoriaService);
+		new UsuarioController(notificationService);
 	}
 
 	/**

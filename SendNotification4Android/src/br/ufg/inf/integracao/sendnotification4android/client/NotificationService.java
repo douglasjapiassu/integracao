@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
  * 
  * @author YaW Tecnologia
  */
-@RemoteServiceRelativePath("mserv")
+@RemoteServiceRelativePath("nserv")
 public interface NotificationService extends RemoteService {
 
 	/**

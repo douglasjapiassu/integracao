@@ -24,7 +24,7 @@ import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
  * @author YaW Tecnologia
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class MercadoriaEntity {
+public class UsuarioEntity {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -34,7 +34,7 @@ public class MercadoriaEntity {
 	private String nome;
 	
 	@Persistent
-	private String descricao;
+	private String email;
 	
 	@Persistent
 	private Integer quantidade;
@@ -42,15 +42,13 @@ public class MercadoriaEntity {
 	@Persistent
 	private Double preco;
 	
-	public MercadoriaEntity() {}
+	public UsuarioEntity() {}
 	
-	public MercadoriaEntity(Usuario m) {
+	public UsuarioEntity(Usuario m) {
 		if (m != null) {
 			this.id = m.getId();
 			this.nome = m.getNome();
-			this.descricao = m.getDescricao();
-			this.quantidade = m.getQuantidade();
-			this.preco = m.getPreco();
+			this.email = m.getEmail();
 		}
 	}
 
@@ -62,50 +60,34 @@ public class MercadoriaEntity {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setEmail(String descricao) {
+		this.email = descricao;
 	}
 
 	public Long getId() {
 		return id;
 	}
 	
-	public Double getPreco() {
-		return preco;
+	protected Usuario toUsuario() {
+		Usuario usuario = new Usuario();
+		
+		usuario.setId(this.id);
+		usuario.setNome(this.nome);
+		usuario.setEmail(this.email);
+		
+		return usuario;
 	}
 	
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-	
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-	
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-	
-	protected Usuario toMercadoria() {
-		Usuario m = new Usuario();
-		m.setId(this.id);
-		m.setNome(this.nome);
-		m.setDescricao(this.descricao);
-		m.setPreco(this.preco);
-		m.setQuantidade(this.quantidade);
-		return m;
-	}
-	
-	public static Usuario[] toMercadoriaArray(List<MercadoriaEntity> mercadorias) {
-		Usuario[] data = new Usuario[mercadorias.size()];
-		for (int i = 0; i < mercadorias.size(); i++) {
-			MercadoriaEntity m = mercadorias.get(i);
+	public static Usuario[] toMercadoriaArray(List<UsuarioEntity> usuarios) {
+		Usuario[] data = new Usuario[usuarios.size()];
+		for (int i = 0; i < usuarios.size(); i++) {
+			UsuarioEntity m = usuarios.get(i);
 			if (m != null) {
-				data[i] = m.toMercadoria();
+				data[i] = m.toUsuario();
 			}
 		}
 		return data;

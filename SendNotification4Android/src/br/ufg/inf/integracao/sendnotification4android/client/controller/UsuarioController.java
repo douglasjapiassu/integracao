@@ -34,36 +34,36 @@ public class UsuarioController extends AbstractController {
 
 	private NotificationServiceAsync service;
 	private VerticalPanel mainPanel = new VerticalPanel();
-	private UsuarioTable mercadoriasTable = new UsuarioTable();
+	private UsuarioTable usuariosTable = new UsuarioTable();
 	private HorizontalPanel buttonPanel = new HorizontalPanel();
 	private Label lastUpdatedLabel = new Label();
 	
 	public UsuarioController(NotificationServiceAsync s) {
 		this.service = s;
 		
-		final EnviaNotificacaoDialog incluirDialog = new EnviaNotificacaoDialog();
-		registerHandler(incluirDialog.getbSalvar(), new ClickHandler() {
+		final EnviaNotificacaoDialog enviaNotificacaoDialog = new EnviaNotificacaoDialog();
+		registerHandler(enviaNotificacaoDialog.getbSalvar(), new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				final Usuario m = incluirDialog.getMercadoria();
-				if (m == null) return;
+				final Usuario usuario = enviaNotificacaoDialog.getUsuario();
+				if (usuario == null) return;
 				
-				service.add(m, new DefaultCallback<Long>() {
+				service.add(usuario, new DefaultCallback<Long>() {
 					@Override
 					public void onSuccess(Long result) {
-						m.setId(result);
+						usuario.setId(result);
 						
-						mercadoriasTable.add(m);
-						incluirDialog.hide();
+						usuariosTable.adicionar(usuario);
+						enviaNotificacaoDialog.hide();
 					}
 					
 				});
 			}
 		});
-		registerHandler(incluirDialog.getbCancelar(), new ClickHandler() {
+		registerHandler(enviaNotificacaoDialog.getbCancelar(), new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				incluirDialog.hide();
+				enviaNotificacaoDialog.hide();
 			}
 		});
 		
@@ -71,8 +71,8 @@ public class UsuarioController extends AbstractController {
 		registerHandler(bNova, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				incluirDialog.center();
-				incluirDialog.show();
+				enviaNotificacaoDialog.center();
+				enviaNotificacaoDialog.show();
 			}
 		});
 		
@@ -80,12 +80,12 @@ public class UsuarioController extends AbstractController {
 		registerHandler(bEditar, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				Usuario m = mercadoriasTable.getMercadoriaSelected();
+				Usuario m = usuariosTable.getUsuarioSelecionado();
 				if (m == null) return;
 				
-				incluirDialog.setMercadoria(m);
-				incluirDialog.center();
-				incluirDialog.show();
+				enviaNotificacaoDialog.setMercadoria(m);
+				enviaNotificacaoDialog.center();
+				enviaNotificacaoDialog.show();
 			}
 		});
 		
@@ -93,14 +93,14 @@ public class UsuarioController extends AbstractController {
 		registerHandler(bExcluir, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				final Usuario m = mercadoriasTable.getMercadoriaSelected();
+				final Usuario m = usuariosTable.getUsuarioSelecionado();
 				if (m == null) return;
 				
 				service.remove(m, new DefaultCallback<Boolean>() {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
-							mercadoriasTable.remove(m);
+							usuariosTable.remover(m);
 						}
 					}
 				});
@@ -121,11 +121,11 @@ public class UsuarioController extends AbstractController {
 		buttonPanel.add(bExcluir);
 		buttonPanel.add(bAtualizar);
 		
-		mainPanel.add(mercadoriasTable);
+		mainPanel.add(usuariosTable);
 		mainPanel.add(buttonPanel);
 		mainPanel.add(lastUpdatedLabel);
 
-		RootPanel.get("mercadoriaList").add(mainPanel);
+		RootPanel.get("notificacaoList").add(mainPanel);
 		
 		fillTable();
 	}
@@ -146,7 +146,7 @@ public class UsuarioController extends AbstractController {
 			
 			@Override
 			public void onSuccess(Usuario[] mercadorias) {
-				mercadoriasTable.clear();
+				usuariosTable.clear();
 				fillTable(mercadorias);
 				updateStateButtons(true);
 			}
@@ -160,7 +160,7 @@ public class UsuarioController extends AbstractController {
 	}
 	
 	private void fillTable(Usuario[] mercadorias) {
-		mercadoriasTable.fillTable(mercadorias);
+		usuariosTable.fillTable(mercadorias);
 	    lastUpdatedLabel.setText("Última consulta: "+ DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(new Date()));
 	}
 	

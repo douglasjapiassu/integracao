@@ -5,32 +5,27 @@ import java.io.Serializable;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
- * Classe que representa uma mercadoria na camada cliente. Esse componente, assim como todos no pacote <code>client</code>, são <i>compilados</i> em <code>JavaScript</code>.
+ * Classe que representa um Usuario cadastrado.
  * 
- * <p>O objeto mercadoria é trafegado entre as camadas <i>cliente</i> e <i>servidor</i>. Através do <code>RPC</code> do GWT o objeto <code>Java</code> é transformado em <code>JavaScript</code> e vice versa.</p>
  * 
- * @author YaW Tecnologia
+ * @author douglasjapiassu
  */
 public class Usuario implements Serializable {
 
 	private Long id;
 	
+	private String registrationId;
+	
 	private String nome;
 	
-	private String descricao;
-	
-	private Integer quantidade;
-	
-	private Double preco;
+	private String email;
 	
 	public Usuario(){}
 	
-	public Usuario(Long id, String nome, String descricao, Integer quantidade, Double preco) {
+	public Usuario(Long id, String nome, String email) {
 		this.id = id;
 		this.nome = nome;
-		this.descricao = descricao;
-		this.quantidade = quantidade;
-		this.preco = preco;
+		this.email = email;
 	}
 
 	public Long getId() {
@@ -41,6 +36,14 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
+	public String getRegistrationId() {
+		return registrationId;
+	}
+
+	public void setRegistrationId(String registrationId) {
+		this.registrationId = registrationId;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -49,33 +52,17 @@ public class Usuario implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
-
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
-
-	public Double getPreco() {
-		return preco;
-	}
-
-	public void setPreco(Double preco) {
-		this.preco = preco;
-	}
-	
 	@Override
 	public String toString() {
-		return id + " - " + nome + " - " + descricao;
+		return id + " - " + nome + " - " + email;
 	}
 	
 	@Override
@@ -89,7 +76,7 @@ public class Usuario implements Serializable {
 		Usuario outro = (Usuario) obj;
 		boolean equal = (id != null && id.equals(outro.id)) 
 				|| (nome != null && nome.equals(outro.nome))
-				|| (descricao != null && descricao.equals(outro.descricao));
+				|| (email != null && email.equals(outro.email));
 		return equal;
 	}
 	
@@ -99,19 +86,8 @@ public class Usuario implements Serializable {
 		
 		hash = (31 * hash) + (id == null ? 0 : id.intValue());
 		hash = (31 * hash) + (nome == null ? 0 : nome.hashCode());
-		hash = (31 * hash) + (descricao == null ? 0 : descricao.hashCode());
+		hash = (31 * hash) + (email == null ? 0 : email.hashCode());
 		
 		return hash;
 	}
-	
-	public static String convertPrecoToString(double preco) {
-		NumberFormat numberFmt = NumberFormat.getFormat("#,##0.00");
-		return numberFmt.format(preco);
-	}
-	
-	public static double formatStringToPreco(String strPreco) {
-		NumberFormat numberFmt = NumberFormat.getFormat("#,##0.00");
-		 return numberFmt.parse(strPreco);
-	}
-	
 }
