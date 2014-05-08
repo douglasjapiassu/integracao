@@ -2,13 +2,13 @@ package br.ufg.inf.integracao.sendnotification4android.client.controller;
 
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Map;
 
-import br.ufg.inf.integracao.sendnotification4android.client.NotificationServiceAsync;
+import br.ufg.inf.integracao.sendnotification4android.client.UsuarioServiceAsync;
 import br.ufg.inf.integracao.sendnotification4android.client.callback.DefaultCallback;
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
 import br.ufg.inf.integracao.sendnotification4android.client.ui.EnviaNotificacaoDialog;
 import br.ufg.inf.integracao.sendnotification4android.client.ui.UsuarioTable;
+import br.ufg.inf.integracao.sendnotification4android.server.HTTPRequestGCM;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -27,48 +27,39 @@ import com.google.gwt.user.client.ui.Widget;
  * <p>Esse componente é responsável por instanciar objetos GUI, além de vincular as operações com o serviço web.</code>
  * 
  * <p>As operações com a camada servidor são acessadas pela interface <code>MercadoriaServiceAsync</code>.</p>
- * 
- * @author YaW Tecnologia
  */
 public class UsuarioController extends AbstractController {
 
-	private NotificationServiceAsync service;
+	private UsuarioServiceAsync service;
+	private HTTPRequestGCM requisicaoGCM = new HTTPRequestGCM();
 	private VerticalPanel mainPanel = new VerticalPanel();
 	private UsuarioTable usuariosTable = new UsuarioTable();
 	private HorizontalPanel buttonPanel = new HorizontalPanel();
-	private Label lastUpdatedLabel = new Label();
+	private Label ultimaAtualizacaoLabel = new Label();
 	
-	public UsuarioController(NotificationServiceAsync s) {
+	public UsuarioController(UsuarioServiceAsync s) {
 		this.service = s;
 		
 		final EnviaNotificacaoDialog enviaNotificacaoDialog = new EnviaNotificacaoDialog();
-		registerHandler(enviaNotificacaoDialog.getbSalvar(), new ClickHandler() {
+		registerHandler(enviaNotificacaoDialog.getBtnEnviar(), new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				final Usuario usuario = enviaNotificacaoDialog.getUsuario();
-				if (usuario == null) return;
+				final String mensagem = enviaNotificacaoDialog.getMensagem();
+				if (mensagem == null) return;
 				
-				service.add(usuario, new DefaultCallback<Long>() {
-					@Override
-					public void onSuccess(Long result) {
-						usuario.setId(result);
-						
-						usuariosTable.adicionar(usuario);
-						enviaNotificacaoDialog.hide();
-					}
-					
-				});
+				requisicaoGCM.enviaNotificacaoGCM(mensagem);
+				enviaNotificacaoDialog.hide();
 			}
 		});
-		registerHandler(enviaNotificacaoDialog.getbCancelar(), new ClickHandler() {
+		registerHandler(enviaNotificacaoDialog.getBtnCancelar(), new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				enviaNotificacaoDialog.hide();
 			}
 		});
 		
-		Button bNova = new Button("Nova");
-		registerHandler(bNova, new ClickHandler() {
+		Button btnEnviarNotificacao = new Button("Enviar Notificação");
+		registerHandler(btnEnviarNotificacao, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				enviaNotificacaoDialog.center();
@@ -76,27 +67,14 @@ public class UsuarioController extends AbstractController {
 			}
 		});
 		
-		Button bEditar = new Button("Editar");
-		registerHandler(bEditar, new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Usuario m = usuariosTable.getUsuarioSelecionado();
-				if (m == null) return;
-				
-				enviaNotificacaoDialog.setMercadoria(m);
-				enviaNotificacaoDialog.center();
-				enviaNotificacaoDialog.show();
-			}
-		});
-		
-		Button bExcluir = new Button("Excluir");
-		registerHandler(bExcluir, new ClickHandler() {
+		Button btnExcluirUsuario = new Button("Excluir");
+		registerHandler(btnExcluirUsuario, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				final Usuario m = usuariosTable.getUsuarioSelecionado();
 				if (m == null) return;
 				
-				service.remove(m, new DefaultCallback<Boolean>() {
+				service.remover(m, new DefaultCallback<Boolean>() {
 					@Override
 					public void onSuccess(Boolean result) {
 						if (result) {
@@ -107,61 +85,60 @@ public class UsuarioController extends AbstractController {
 			}
 		});
 		
-		Button bAtualizar = new Button("Atualizar");
-		registerHandler(bAtualizar, new ClickHandler() {
+		Button btnAtualizarLista = new Button("Atualizar");
+		registerHandler(btnAtualizarLista, new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				fillTable();
+				preencherTabela();
 			}
 		});
 		
 		buttonPanel.addStyleName("buttonPanel");
-		buttonPanel.add(bNova);
-		buttonPanel.add(bEditar);
-		buttonPanel.add(bExcluir);
-		buttonPanel.add(bAtualizar);
+		buttonPanel.add(btnEnviarNotificacao);
+		buttonPanel.add(btnExcluirUsuario);
+		buttonPanel.add(btnAtualizarLista);
 		
 		mainPanel.add(usuariosTable);
 		mainPanel.add(buttonPanel);
-		mainPanel.add(lastUpdatedLabel);
+		mainPanel.add(ultimaAtualizacaoLabel);
 
-		RootPanel.get("notificacaoList").add(mainPanel);
+		RootPanel.get("usuariosList").add(mainPanel);
 		
-		fillTable();
+		preencherTabela();
 	}
 	
-	private void updateStateButtons(final boolean enabled) {
+	private void atualizarEstadoBotoes(final boolean isAtivo) {
 		Iterator<Widget> it = buttonPanel.iterator();
 		while (it.hasNext()) {
 			Widget w = it.next();
 			if (w instanceof Button) {
-				((Button) w).setEnabled(enabled);
+				((Button) w).setEnabled(isAtivo);
 			}
 		}
 	}
 	
-	private void fillTable() {
-		updateStateButtons(false);
-		service.getAll(new DefaultCallback<Usuario[]>() {
+	private void preencherTabela() {
+		atualizarEstadoBotoes(false);
+		service.getTodosUsuarios(new DefaultCallback<Usuario[]>() {
 			
 			@Override
 			public void onSuccess(Usuario[] mercadorias) {
 				usuariosTable.clear();
-				fillTable(mercadorias);
-				updateStateButtons(true);
+				preencherTabela(mercadorias);
+				atualizarEstadoBotoes(true);
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
-				updateStateButtons(true);
+				atualizarEstadoBotoes(true);
 				super.onFailure(caught);
 			}
 		});
 	}
 	
-	private void fillTable(Usuario[] mercadorias) {
+	private void preencherTabela(Usuario[] mercadorias) {
 		usuariosTable.fillTable(mercadorias);
-	    lastUpdatedLabel.setText("Última consulta: "+ DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(new Date()));
+	    ultimaAtualizacaoLabel.setText("Última consulta: "+ DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_SHORT).format(new Date()));
 	}
 	
 }

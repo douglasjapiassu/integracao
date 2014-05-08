@@ -15,7 +15,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>notificacaoServlet</servlet-name>
-		<servlet-class>br.ufg.inf.integracao.sendnotification4android.server.NotificationServiceImpl</servlet-class>
+		<servlet-class>br.ufg.inf.integracao.sendnotification4android.server.UsuarioServiceImpl</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

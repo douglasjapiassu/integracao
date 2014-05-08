@@ -8,16 +8,9 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.UmbrellaException;
 
-/**
- * Entry point da aplicação. O método <code>onModuleLoad()</code> é acionado para carregar os componentes do front-end.
- * 
- * Veja a configuração no <code>Gwt_gae.gwt.xml</code>.
- * 
- * @author YaW Tecnologia
- */
 public class SendNotification4Android implements EntryPoint {
 
-	private final NotificationServiceAsync notificationService = GWT.create(NotificationService.class);
+	private final UsuarioServiceAsync usuarioService = GWT.create(UsuarioService.class);
 
 	public void onModuleLoad() {
 		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
@@ -31,7 +24,7 @@ public class SendNotification4Android implements EntryPoint {
 			}
 		});
 		
-		new UsuarioController(notificationService);
+		new UsuarioController(usuarioService);
 	}
 
 	/**

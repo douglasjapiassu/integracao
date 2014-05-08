@@ -35,7 +35,7 @@ span {
 	color: gray;
 }
 
-#header, #mercadoriaList, #footer {
+#header, #usuariosList, #footer {
 	margin-left: auto;
 	margin-right: auto;
 	margin-bottom: 10px;

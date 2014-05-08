@@ -9,7 +9,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
 
 /**
- * Lista de Usu�rios
+ * Lista de Usu�rios
  * 
  * <p>As colunas:</p>
  * <ul>
@@ -35,17 +35,13 @@ public class UsuarioTable extends FlexTable {
 	public UsuarioTable() {
 		setText(0, 0, "ID");
 		setText(0, 1, "Nome");
-		setText(0, 2, "Descrição");
-		setText(0, 3, "Quantidade");
-		setText(0, 4, "Preço");
+		setText(0, 2, "Email");
 		setCellPadding(6);
 		
 		getRowFormatter().addStyleName(0, "listHeader");
 		addStyleName("list");
 		getCellFormatter().addStyleName(0, 1, "listTextColumn");
 		getCellFormatter().addStyleName(0, 2, "listTextColumn");
-		getCellFormatter().addStyleName(0, 3, "listNumericColumn");
-		getCellFormatter().addStyleName(0, 4, "listNumericColumn");
 		
 		addClickHandler(new ClickHandler() {
 			
@@ -64,18 +60,18 @@ public class UsuarioTable extends FlexTable {
 	}	
 	
 	/**
-	 * Preenche a tabela com as mercadorias informadas. Caso exista alguma linha na tabela, será removida.
+	 * Preenche a tabela com os usuários cadastrados.
 	 * @param mercadorias
 	 */
 	public void fillTable(Usuario[] mercadorias) {
 		source = new UsuarioDataSource(mercadorias);
-		updateAll();
+		atualizarTabela();
 	}
 	
 	/**
 	 * Recarrega todas as linhas na tabela.
 	 */
-	private void updateAll() {
+	private void atualizarTabela() {
 		for (int i = this.getRowCount()-1; i > 0; i--){
             this.removeRow(1);
         }
@@ -124,11 +120,11 @@ public class UsuarioTable extends FlexTable {
 	
 	public void adicionar(Usuario usuario) {
 		source.add(usuario);
-		updateAll();
+		atualizarTabela();
 	}
 	
-	public void remover(Usuario m) {
-		source.remove(m);
-		updateAll();
+	public void remover(Usuario usuario) {
+		source.remove(usuario);
+		atualizarTabela();
 	}
 }

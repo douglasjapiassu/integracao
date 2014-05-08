@@ -10,15 +10,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gwt.core.client.GWT;
 
-import br.ufg.inf.integracao.sendnotification4android.client.NotificationService;
-import br.ufg.inf.integracao.sendnotification4android.client.NotificationServiceAsync;
+import br.ufg.inf.integracao.sendnotification4android.client.UsuarioService;
+import br.ufg.inf.integracao.sendnotification4android.client.UsuarioServiceAsync;
 import br.ufg.inf.integracao.sendnotification4android.client.callback.DefaultCallback;
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
+import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAO;
+import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAOJDO;
+import br.ufg.inf.integracao.sendnotification4android.server.model.UsuarioEntity;
 
 public class ReceiveRegistrationIDServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
-    private final NotificationServiceAsync notificationService = GWT.create(NotificationService.class);
+    private UsuarioDAO dao = new UsuarioDAOJDO();
  
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -31,33 +34,28 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
         if (registrationId == null)
         	response.sendError(400);
         else {
-        	String resposta = 
+            final Usuario usuario = new Usuario();
+            usuario.setNome("Teste");
+            usuario.setRegistrationId(registrationId);
+            
+            UsuarioEntity ue = dao.save(new UsuarioEntity(usuario));
+            
+            String resposta = 
             		"<html> " + 
             		"<head>" +
             		"	<title>Registration Id</title>" +
             		"</head>" + 
             		"<body>" + 
             		"	<h1> Bem-vindo ao Receive Notification </h1>" +
-            		"	<p> Você foi registrado no Servidor e agora passará a receber nossas notificações. <br>" +
-            		"		(" + registrationId + ")</p>" +
+            		"	<p> Vocï¿½ foi registrado no Servidor e agora passarï¿½ a receber nossas notificaï¿½ï¿½es. <br>" +
+            		"		Seu id de usuÃ¡rio Ã© " + ue.getId() + " <br>" +
+            		"		Seu identificador do aparelho Ã© " + registrationId + ")</p>" +
             		"</body>" +
             		"</html>";
             
             response.setContentType("text/html");
             response.setHeader("Cache-Control", "no-cache");
             response.getWriter().write(resposta);
-            
-            final Usuario usuario = new Usuario();
-            usuario.setNome("Teste");
-            usuario.setRegistrationId(registrationId);
-            
-            notificationService.add(usuario, new DefaultCallback<Long>() {
-				@Override
-				public void onSuccess(Long result) {
-					usuario.setId(result);
-				}
-				
-			});
         }
         
     }

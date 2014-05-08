@@ -13,15 +13,7 @@ import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
 /**
  * Classe de modelo que representa uma mercadoria. A mercadoria é um objeto persistido, por isso utilizamos o nome entidade.
  * 
- * <p>As funcionalidades desse sistema demonstração são concentradas no cadastro (CRUD) de mercadorias.</p>
- * <p>
- * Nessa classe são definidas operações para assumir os dados de uma <code>Mercadoria</code> em um uma <code>MercadoriaEntity</code>.
- * Também é possível recuperar os dados de uma lista de <code>MercadoriaEntity</code> e criar um array de <code>Mercadoria</code> com esses dados.
- * </p>
- * 
  * <p>Essa entidade é mapeada com anotações da especificação JDO (<i>Java Data Objects</i>), o mecanismo de persistência utilizado na aplicação.</p>
- * 
- * @author YaW Tecnologia
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class UsuarioEntity {

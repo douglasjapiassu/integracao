@@ -11,7 +11,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  * <p>O controlador também herda <code>ClickHandler</code> para centralizar as operações relacionadas a partir de ações dos usuários (<i>eventos</i>).</p>
  * 
- * @author YaW Tecnologia
+ * @author douglas.japiassu
  */
 public abstract class AbstractController implements ClickHandler {
 
