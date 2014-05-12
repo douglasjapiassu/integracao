@@ -1,18 +1,12 @@
 package br.ufg.inf.integracao.sendnotification4android.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gwt.core.client.GWT;
-
-import br.ufg.inf.integracao.sendnotification4android.client.UsuarioService;
-import br.ufg.inf.integracao.sendnotification4android.client.UsuarioServiceAsync;
-import br.ufg.inf.integracao.sendnotification4android.client.callback.DefaultCallback;
 import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
 import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAO;
 import br.ufg.inf.integracao.sendnotification4android.server.dao.UsuarioDAOJDO;

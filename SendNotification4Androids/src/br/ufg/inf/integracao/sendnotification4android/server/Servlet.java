@@ -1,7 +1,6 @@
 package br.ufg.inf.integracao.sendnotification4android.server;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

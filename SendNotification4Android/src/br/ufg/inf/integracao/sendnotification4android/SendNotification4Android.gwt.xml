@@ -18,7 +18,7 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
-
+  <inherits name='com.google.gwt.json.JSON'/>
   <!-- Specify the app entry point class.                         -->
   <entry-point class='br.ufg.inf.integracao.sendnotification4android.client.SendNotification4Android'/>
 
@@ -26,7 +26,7 @@
   <source path='client'/>
   <source path='shared'/>
   <source path='server'/>
-  <source path='*'/>
+  <source path='util'/>
 
   <!-- allow Super Dev Mode -->
   <add-linker name="xsiframe"/>

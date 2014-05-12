@@ -1,27 +1,109 @@
 package br.ufg.inf.integracao.sendnotification4android.server;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.google.gwt.http.client.Request;
+import com.google.gwt.http.client.RequestBuilder;
+import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
+import com.google.gwt.http.client.Response;
+import com.google.gwt.http.client.URL;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONException;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.jsonp.client.JsonpRequestBuilder;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import br.ufg.inf.integracao.sendnotification4android.client.model.Product;
+import br.ufg.inf.integracao.sendnotification4android.client.model.Usuario;
 import br.ufg.inf.integracao.sendnotification4android.util.Util;
-
-import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.Result;
-import com.google.android.gcm.server.Sender;
 
 public class HTTPRequestGCM {
 	
-	public void enviaNotificacaoGCM(String mensagem) {
+	public void enviar(String mensagem) {
+		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
+				URL.encode(Util.GCM_URL));
+		
+		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
+
 		try {
-			URL url = new URL(Util.GCM_URL);
+			builder.setHeader("Content-Type", "application/json");
+			builder.setHeader("Authorization", "key=" + Util.API_KEY);
+			builder.setHeader("Access-Control-Allow-Origin", "*");
+			
+			String regId1 = "1";
+			String[] ids = new String[] { regId1, regId1 };
+			
+			JSONObject objeto = new JSONObject();
+			JSONObject data = new JSONObject();
+			data.put("mensagem", new JSONString(mensagem));
+			objeto.put("data", data);
+			
+			JSONArray array = new JSONArray();
+			
+			for (int i = 0; i < ids.length; i++) {
+				array.set(i, new JSONString(ids[i]));
+			}
+			
+			jsonp.requestObject(URL.encode(Util.GCM_URL), new AsyncCallback<Product>() {
+				  @Override
+				  public void onFailure(Throwable caught) {
+				    Window.alert(caught.getMessage());
+				  }
+
+				  @Override
+				  public void onSuccess(Product fbUser) {
+				      /*if (fbUser.isError()) {
+				        StringBuilder builder = new StringBuilder();
+				        builder.append("Fb error: ");
+				        builder.append(fbUser.getError().getMessage() + ", ");
+				        builder.append(fbUser.getError().getCode());
+				        String message = builder.toString();
+				        Window.alert(message);
+				        return;
+				      }*/
+
+				      StringBuilder builder = new StringBuilder();
+				      builder.append("Fetched user: " );
+				      String details = builder.toString();
+				      Window.alert("Got: " + details);
+				  }
+				});
+			
+			
+			objeto.put("registration_ids", array);
+			Request response = builder.sendRequest(objeto.toString(),
+					new RequestCallback() {
+
+						@Override
+						public void onResponseReceived(Request request,
+								Response response) {
+							System.out.println(response.getStatusCode());
+							System.out.println(response.getText());
+							System.out.println(response.getStatusText());
+
+						}
+
+						@Override
+						public void onError(Request request, Throwable exception) {
+							System.out.println(request.toString());
+
+						}
+					});
+			System.out.println(builder);
+			System.out.println(response.toString());
+		} catch (RequestException e) {
+			Window.alert("Failed to send the request: " + e.getMessage());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+/*	public void enviaNotificacaoGCM(String mensagem) {
+		try {
+//			URL url = new URL(Util.GCM_URL);
+			
 			HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
 			
 			conexao.setRequestMethod("POST");
@@ -88,6 +170,6 @@ public class HTTPRequestGCM {
 		//Resposta da requisi��o
 		if (result != null)
 			System.out.println(result.toString());
-	}
+	}*/
 
 }

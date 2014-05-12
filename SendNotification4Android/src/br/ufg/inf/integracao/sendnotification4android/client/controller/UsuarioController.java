@@ -22,11 +22,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * Define o controlador para operações com o cadastro <code>Mercadoria</code>.
+ * Define o controlador para operações com o gerenciamento de  Usuarios.
  * 
  * <p>Esse componente é responsável por instanciar objetos GUI, além de vincular as operações com o serviço web.</code>
  * 
- * <p>As operações com a camada servidor são acessadas pela interface <code>MercadoriaServiceAsync</code>.</p>
+ * <p>As operações com a camada servidor são acessadas pela interface <code>UsuarioServiceAsync</code>.</p>
  */
 public class UsuarioController extends AbstractController {
 
@@ -47,7 +47,7 @@ public class UsuarioController extends AbstractController {
 				final String mensagem = enviaNotificacaoDialog.getMensagem();
 				if (mensagem == null) return;
 				
-				requisicaoGCM.enviaNotificacaoGCM(mensagem);
+				requisicaoGCM.enviar(mensagem);
 				enviaNotificacaoDialog.hide();
 			}
 		});

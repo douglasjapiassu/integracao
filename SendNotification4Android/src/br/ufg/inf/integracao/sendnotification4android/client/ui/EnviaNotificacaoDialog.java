@@ -16,7 +16,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class EnviaNotificacaoDialog extends DialogBox {
 
-	private TextArea taMensagem;
+	private TextArea taMensagem = new TextArea();
 	
 	private Button btnEnviar;
 	private Button btnCancelar;

@@ -2,8 +2,6 @@ package br.ufg.inf.integracao.sendnotification4android.client.model;
 
 import java.io.Serializable;
 
-import com.google.gwt.i18n.client.NumberFormat;
-
 /**
  * Classe que representa um Usuario cadastrado.
  * 
@@ -11,6 +9,8 @@ import com.google.gwt.i18n.client.NumberFormat;
  * @author douglasjapiassu
  */
 public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 5439132308575576962L;
 
 	private Long id;
 	
