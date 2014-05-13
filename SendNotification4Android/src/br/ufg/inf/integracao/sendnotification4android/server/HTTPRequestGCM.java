@@ -24,15 +24,17 @@ public class HTTPRequestGCM {
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST,
 				URL.encode(Util.GCM_URL));
 		
-		JsonpRequestBuilder jsonp = new JsonpRequestBuilder();
-
 		try {
 			builder.setHeader("Content-Type", "application/json");
+			//builder.setHeader("Content-Type", "text/plain");
 			builder.setHeader("Authorization", "key=" + Util.API_KEY);
-			builder.setHeader("Access-Control-Allow-Origin", "*");
+			builder.setHeader("Access-Control-Request-Method", "POST");
+			builder.setHeader("Access-Control-Request-Headers", "Authorization");
 			
-			String regId1 = "1";
-			String[] ids = new String[] { regId1, regId1 };
+			String registrationId1 = "APA91bEhqcMRi_8-GkKhGtfQT7MjGUUmcuyX68g1mqjlWJZ2wcYeAd1C2WBBfp8ReLVFWhs1j0GsQZ1rKbb_0IGfMYfCh9-YHy6VGRFG3FSupLPbCOocyYj78oMe8hzyf60wtfgg6KnZ9E3W70SyF7LEFPamQmuO_w";
+			String[] ids = new String[] { registrationId1};
+			
+
 			
 			JSONObject objeto = new JSONObject();
 			JSONObject data = new JSONObject();
@@ -45,32 +47,6 @@ public class HTTPRequestGCM {
 				array.set(i, new JSONString(ids[i]));
 			}
 			
-			jsonp.requestObject(URL.encode(Util.GCM_URL), new AsyncCallback<Product>() {
-				  @Override
-				  public void onFailure(Throwable caught) {
-				    Window.alert(caught.getMessage());
-				  }
-
-				  @Override
-				  public void onSuccess(Product fbUser) {
-				      /*if (fbUser.isError()) {
-				        StringBuilder builder = new StringBuilder();
-				        builder.append("Fb error: ");
-				        builder.append(fbUser.getError().getMessage() + ", ");
-				        builder.append(fbUser.getError().getCode());
-				        String message = builder.toString();
-				        Window.alert(message);
-				        return;
-				      }*/
-
-				      StringBuilder builder = new StringBuilder();
-				      builder.append("Fetched user: " );
-				      String details = builder.toString();
-				      Window.alert("Got: " + details);
-				  }
-				});
-			
-			
 			objeto.put("registration_ids", array);
 			Request response = builder.sendRequest(objeto.toString(),
 					new RequestCallback() {
@@ -81,7 +57,6 @@ public class HTTPRequestGCM {
 							System.out.println(response.getStatusCode());
 							System.out.println(response.getText());
 							System.out.println(response.getStatusText());
-
 						}
 
 						@Override

@@ -7,6 +7,21 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
+    
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- GCM -->
+    <permission
+        android:name="br.ufg.inf.integracao.receivenotification.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="br.ufg.inf.integracao.receivenotification.permission.C2D_MESSAGE" />
+    <!-- Permite o recebimento de mensagens do GCM. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <!-- Permite a conexão com o serviço GCM. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- O GCM requer uma conta do Google para sua utilização. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- Mantém o processador dormindo quando uma mensagem é recebida. -->
 
     <application
         android:allowBackup="true"
@@ -34,6 +49,8 @@
             android:label="@string/title_activity_view_registrar"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        
+        <service android:name="br.ufg.inf.integracao.receivenotification.service.GCMIntentService" />
     </application>
 
 </manifest>
