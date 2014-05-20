@@ -1,0 +1,32 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form styleClass="form-horizontal">
+    	<fieldset>
+    		<legend><h3><h:outputText value="#{msg['label.notificacao']}" /> <small> <h:outputText value="#{subtitle}" /></small></h3></legend>
+			<h:panelGroup
+				layout="block"
+				rendered="#{not empty facesContext.messageList }">
+				<h:messages errorClass="alert alert-danger alert-dismissable" infoClass="alert alert-info alert-dismissable" warnClass="alert alert-warning alert-dismissable" fatalClass="alert alert-danger alert-dismissable" showDetail="true" showSummary="true">
+					<h:button value="x" class="close"/>
+				</h:messages>
+			</h:panelGroup>
+    		<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.mensagem']}" /></label>
+	    		<div class="controls">
+	    			<h:inputTextarea value="#{usuarioMB.mensagem}" label="#{msg['label.usuario.nome']}" required="true" rows="10" cols="20">
+	    			</h:inputTextarea>
+	    		</div>
+    		</div>
+    	</fieldset>
+    	
+    	<div class="control-group">
+    		<div class="controls"> 
+    			<h:commandButton value="#{msg['button.enviar']}" action="#{usuarioMB.enviarNotificacao}" styleClass="btn btn-primary"/>
+    			<h:button value="#{msg['button.cancelar']}" outcome="listaUsuarios" styleClass="btn"/>
+    		</div>
+    	</div>
+    </h:form>
+</ui:fragment>
