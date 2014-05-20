@@ -1,0 +1,56 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form styleClass="form-horizontal">
+    	<fieldset>
+    		<legend><h3><h:outputText value="#{msg['label.usuario']}" /> <small> <h:outputText value="#{subtitle}" /></small></h3></legend>
+    		<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.usuario.id']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText readonly="true" value="#{usuarioMB.usuario.id}" label="#{msg['label.usuario.id']}" required="true" styleClass="input-large">
+	    			</h:inputText>
+	    		</div>
+    		</div>
+    		
+    		<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.usuario.nome']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText readonly="true" value="#{usuarioMB.usuario.nome}" label="#{msg['label.usuario.nome']}" required="true" styleClass="input-large">
+	    			</h:inputText>
+	    		</div>
+	    	</div>
+	    	
+	    	<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.usuario.email']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText value="#{usuarioMB.usuario.email}" label="#{msg['label.usuario.email']}" required="true" styleClass="input-large">
+	    			</h:inputText>
+	    		</div>
+	    	</div>
+	    	
+	    	<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.usuario.dataRegistro']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText readonly="true" value="#{usuarioMB.usuario.dataRegistro}" label="#{msg['label.usuario.dataRegistro']}" required="true" styleClass="input-small">
+	    				<f:convertDateTime locale="pt,BR" dateStyle="long" pattern="dd/MM/yyyy"></f:convertDateTime>
+	    			</h:inputText>
+	    		</div>
+	    	</div>
+    	</fieldset>
+    	
+    	<div class="control-group">
+    		<div class="controls">
+    			<h:commandButton value="#{msg['button.salvar']}" action="#{usuarioMB.salvar}" styleClass="btn btn-success"/>
+    			<h:button value="#{msg['button.cancelar']}" outcome="listaUsuarios" styleClass="btn"/>
+    			<h:commandButton value="#{msg['button.excluir']}" action="#{usuarioMB.remover}" rendered="#{usuarioMB.usuario.id != null}" immediate="true" styleClass="btn btn-danger"/>
+    		</div>
+    	</div>
+    </h:form>
+    
+    <h:panelGroup layout="block" class="alert alert-error" rendered="#{facesContext.validationFailed or not empty facesContext.messageList }">
+    	<h:messages showDetail="true" showSummary="false" />
+    </h:panelGroup>
+    
+</ui:fragment>
