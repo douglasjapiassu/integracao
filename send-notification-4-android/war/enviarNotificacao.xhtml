@@ -2,12 +2,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
-
+      
     <ui:composition template="/layout/template.xhtml">
     	<ui:define name="pageTitle"><h:outputText value="#{msg['page.title.enviar.notificacao']}" /></ui:define>
     	
     	<f:metadata>
-            <f:event type="preRenderView" listener="#{usuarioMB.enviar}" />
+            <f:event type="preRenderView" listener="#{notificacaoMB.enviar}" />
         </f:metadata>
     	
 		<ui:define name="content">

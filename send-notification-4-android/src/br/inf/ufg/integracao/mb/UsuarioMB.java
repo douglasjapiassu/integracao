@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 
@@ -21,8 +20,6 @@ import org.apache.log4j.Logger;
 import br.inf.ufg.integracao.dao.UsuarioDAO;
 import br.inf.ufg.integracao.dao.UsuarioDAOObjectify;
 import br.inf.ufg.integracao.model.Usuario;
-import br.inf.ufg.integracao.server.EnviaNotificacaoGCM;
-import br.inf.ufg.integracao.server.Util;
 
 /**
  * Componente atua como um intermediário das telas do cadastro e os componentes de negócio (<code>DAO</code>) da entidade <code>Usuario</code>.
@@ -37,8 +34,6 @@ import br.inf.ufg.integracao.server.Util;
 public class UsuarioMB implements Serializable {
 	
 	private static Logger log = Logger.getLogger(UsuarioMB.class);
-	
-	private String mensagem;
 	
 	/**
 	 * Referência do componente de persistência.
@@ -55,6 +50,8 @@ public class UsuarioMB implements Serializable {
 	 */
 	private Long idSelecionado;
 	
+	private static String abaAtiva;
+	
 	/**
 	 * Mantém os usuários apresentados na listagem indexadas pelo id.
 	 * <strong>Importante:</strong> a consulta (query) no DataStore do App Engine pode retornar <i>dados antigos</i>, 
@@ -69,14 +66,6 @@ public class UsuarioMB implements Serializable {
 		preencherUsuarios();
 	}
 	
-	public String getMensagem() {
-		return mensagem;
-	}
-
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -91,6 +80,14 @@ public class UsuarioMB implements Serializable {
 	
 	public Long getIdSelecionado() {
 		return idSelecionado;
+	}
+	
+	public String getAbaAtiva() {
+		return abaAtiva;
+	}
+
+	public static void setAbaAtiva(String aba) {
+		abaAtiva = aba;
 	}
 	
 	/**
@@ -114,22 +111,6 @@ public class UsuarioMB implements Serializable {
 			addMessage(getMessageFromI18N("msg.erro.listar.usuario"), ex.getMessage());
 		}
 		
-	}
-	
-	/**
-	 * Ação executada quando a página de inclusão de usuarios for carregada.
-	 */
-	public void incluir(){
-		usuario = new Usuario();
-		log.debug("Pronto pra incluir");
-	}
-	
-	/**
-	 * Ação executada quando a página de envio de notificacoes for carregada.
-	 */
-	public void enviar(){
-		usuario = new Usuario();
-		log.debug("Pronto pra enviar notificacoes");
 	}
 	
 	/**
@@ -169,23 +150,10 @@ public class UsuarioMB implements Serializable {
 	}
 	
 	/**
-	 * Operação acionada pela tela de listagem, através do <code>commandButton</code> <strong>Atualizar</strong>. 
-	 */
-	public void enviarNotificacao() {
-		if (Util.isTamanhoDaMensagemInvalido(mensagem)) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Aten��o", "Mensagem deve ter entre 5 e 2048 caracteres."));
-			return;
-		}
-			
-		EnviaNotificacaoGCM en = new EnviaNotificacaoGCM();
-		String retorno = en.enviaNotificacaoGCM(new ArrayList<Usuario>(usuarios.values()), mensagem);
-        addMessage("Aten��o", retorno);
-	}
-	
-	/**
 	 * Operação acionada toda a vez que a  tela de listagem for carregada.
 	 */
 	public void reset() {
+		abaAtiva = "listaUsuarios";
 		usuario = null;
 		idSelecionado = null;
 	}

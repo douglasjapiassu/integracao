@@ -16,6 +16,7 @@ import com.googlecode.objectify.annotation.Id;
  * @author YaW Tecnologia
  */
 @Entity
+@SuppressWarnings("serial")
 public class Usuario implements Serializable {
 
 	@Id

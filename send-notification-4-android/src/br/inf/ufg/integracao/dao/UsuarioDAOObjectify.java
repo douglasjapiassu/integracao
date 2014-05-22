@@ -37,8 +37,8 @@ public class UsuarioDAOObjectify implements Serializable, UsuarioDAO {
 	}
 	
 	@Override
-	public Boolean remove(Usuario mercadoria) {
-		ofy().delete().entity(mercadoria).now();
+	public Boolean remove(Usuario usuario) {
+		ofy().delete().entity(usuario).now();
 		return true;
 	}
 	

@@ -16,7 +16,7 @@
     		<div class="control-group">
 	    		<label class="control-label"><h:outputText value="#{msg['label.mensagem']}" /></label>
 	    		<div class="controls">
-	    			<h:inputTextarea value="#{usuarioMB.mensagem}" label="#{msg['label.usuario.nome']}" required="true" rows="10" cols="20">
+	    			<h:inputTextarea styleClass="taMensagem" value="#{notificacaoMB.notificacao.mensagem}" label="#{msg['label.usuario.nome']}" rows="10" cols="20">
 	    			</h:inputTextarea>
 	    		</div>
     		</div>
@@ -24,7 +24,9 @@
     	
     	<div class="control-group">
     		<div class="controls"> 
-    			<h:commandButton value="#{msg['button.enviar']}" action="#{usuarioMB.enviarNotificacao}" styleClass="btn btn-primary"/>
+    			<h:commandButton href="#" value="#{msg['button.enviar']}" action="#{notificacaoMB.enviarNotificacao}" styleClass="btn btn-primary"/>
+    				<!-- <f:ajax execute="@form" render="@form"/>
+    			</h:commandButton> -->
     			<h:button value="#{msg['button.cancelar']}" outcome="listaUsuarios" styleClass="btn"/>
     		</div>
     	</div>

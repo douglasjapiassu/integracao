@@ -7,7 +7,7 @@
     	<ui:define name="pageTitle"><h:outputText value="#{msg['page.title.lista.usuario']}" /></ui:define>
     	
     	<f:metadata>
-            <f:event type="preRenderView" listener="#{usuarioMB.reset}" />
+            <f:event type="preRenderView" listener="#{usuarioMB.reset}"/>
         </f:metadata>
     	
 		<ui:define name="content">
@@ -43,8 +43,10 @@
 	                </h:column>
 				</h:dataTable>
 				
-				<h:panelGrid columns="2">
-					<h:commandButton action="#{usuarioMB.atualizar}" value="#{msg['button.atualizar']}" styleClass="btn btn-success" />
+				<h:panelGrid columns="1">
+					<h:commandButton action="#{usuarioMB.atualizar}" value="#{msg['button.atualizar']}" styleClass="btn btn-success">
+						<f:ajax execute="@form" render="@form" />
+					</h:commandButton>
 				</h:panelGrid>
 			</h:form>
 			<h:messages />

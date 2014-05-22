@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/layout/template.xhtml">
+    	<ui:define name="pageTitle"><h:outputText value="#{msg['page.title.lista.notificacoes']}" /></ui:define>
+    	
+    	<f:metadata>
+            <f:event type="preRenderView" listener="#{notificacaoMB.reset}" />
+        </f:metadata>
+    	
+		<ui:define name="content">
+			<div style="border-bottom: 1px solid #E5E5E5;">
+				<h3><h:outputText value="#{msg['label.notificacoes']}" />
+					<small> <h:outputText value="#{msg['label.listagem']}" /></small></h3>
+			</div>
+			
+			<h:form>
+				<h:dataTable value="#{notificacaoMB.dmNotificacoes}" var="notificacao" styleClass="table table-hover">
+					<h:column>
+						<f:facet name="header">#</f:facet>
+						<h:outputText value="#{notificacao.id}" />
+	                </h:column>
+	                
+					<!-- <h:column>
+						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
+						<h:link outcome="editarUsuario" value="#{notificacao.mensagem}" title="#{msg['label.editar']} #{usuario.nome}">
+                			<f:param name="id" value="#{usuario.id}" />
+            			</h:link>
+	                </h:column> -->
+	                
+	                <h:column>
+						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
+						<h:outputText value="#{notificacao.mensagem}" />
+	                </h:column>
+	                
+	                <h:column>
+						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.dataEnvio']}" /></f:facet>
+						<h:outputText value="#{notificacao.dataEnvio}">
+							<f:convertDateTime locale="pt,BR" dateStyle="long" pattern="dd/MM/yyyy"></f:convertDateTime>
+						</h:outputText>
+	                </h:column>
+				</h:dataTable>
+				
+				<h:panelGrid columns="1">
+					<h:commandButton includeViewParams="true" action="#{notificacaoMB.atualizar}" value="#{msg['button.atualizar']}" styleClass="btn btn-success">
+						<f:ajax execute="@form" render="@form" />  
+						<f:viewParam name="active" value="notificacoes" />
+					</h:commandButton>
+				</h:panelGrid>
+			</h:form>
+			<h:messages />
+		</ui:define>
+    </ui:composition>
+</html>

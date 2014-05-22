@@ -8,13 +8,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.json.JSONObject;
 
-import br.inf.ufg.integracao.model.Usuario;
+import br.inf.ufg.integracao.model.Notificacao;
 
 import com.google.android.gcm.server.Message;
 import com.google.android.gcm.server.Result;
@@ -22,13 +19,12 @@ import com.google.android.gcm.server.Sender;
 
 public class EnviaNotificacaoGCM {
 	
-	public String enviaNotificacaoGCM(ArrayList<Usuario> usuarios, String mensagem) {
+	public String enviaNotificacaoGCM(Notificacao notificacao) {
 		String retorno = "";
 		try {
-			//
-			String[] ids = new String[usuarios.size()];
-			for (int i = 0; i < usuarios.size(); i++) {
-				ids[i] = usuarios.get(i).getRegistrationId();
+			String[] ids = new String[notificacao.getUsuarios().size()];
+			for (int i = 0; i < notificacao.getUsuarios().size(); i++) {
+				ids[i] = notificacao.getUsuarios().get(i).getRegistrationId();
 			}
 			
 			URL url = new URL(Util.GCM_URL);
@@ -41,7 +37,7 @@ public class EnviaNotificacaoGCM {
 			
 			JSONObject objeto = new JSONObject();
 			JSONObject data = new JSONObject();
-			data.put("mensagem", mensagem);
+			data.put("mensagem", notificacao.getMensagem());
 			objeto.put("data", data);
 			objeto.put("registration_ids", ids);
 			

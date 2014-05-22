@@ -9,9 +9,12 @@ import javax.faces.event.PhaseListener;
 
 import org.apache.log4j.Logger;
 
+import br.inf.ufg.integracao.server.Util;
+
 /**
  * <code>PhaseListener</code> do JSF para forçar a serialização da sessão do App Engine.
  */
+@SuppressWarnings("serial")
 public class SessionSerializationPhaseListener implements PhaseListener {
  
 	private static Logger log = Logger.getLogger(SessionSerializationPhaseListener.class);
@@ -21,7 +24,7 @@ public class SessionSerializationPhaseListener implements PhaseListener {
     private void serialSession() {
         log.debug("Serializando a session web.");
         final FacesContext facesContext = FacesContext.getCurrentInstance();
-        final Map sessionMap = facesContext.getExternalContext().getSessionMap();
+        final Map<String, Object> sessionMap = facesContext.getExternalContext().getSessionMap();
         sessionMap.put("forceGaeSessionSerialization", System.currentTimeMillis());
     }
     
