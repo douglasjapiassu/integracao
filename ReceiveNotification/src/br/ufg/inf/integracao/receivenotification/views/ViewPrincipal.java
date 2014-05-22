@@ -27,7 +27,15 @@ public class ViewPrincipal extends Activity {
 	DBAdapter dbAdapter;
 	private boolean gcmAtivo;
 	
-    @Override
+    public boolean isGcmAtivo() {
+		return gcmAtivo;
+	}
+
+	public void setGcmAtivo(boolean gcmAtivo) {
+		this.gcmAtivo = gcmAtivo;
+	}
+
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbAdapter = new DBAdapter(this);
@@ -41,58 +49,29 @@ public class ViewPrincipal extends Activity {
     	btnHistorico = (Button) findViewById(R.id.btnHistorico);
     	btnHistorico.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
-				//carregarNotificacoesSalvas(context);
 				Intent intent = new Intent(context, ViewHistoricoNotificacoes.class);
 				startActivity(intent);
-			}});
-        
-    	
-        btnNovoCadastro = (Button) findViewById(R.id.btnNovo);
-        btnNovoCadastro.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				loadViewCadastro();
 			}});
         
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
         btnRegistrar.setOnClickListener(new OnClickListener(){
         	public void onClick(View v) {
-        		registrarGCM();
+        		//registrarGCM();
+        		Intent intent = new Intent(context, ViewRegistrar.class);
+				startActivity(intent);
         	}});
     }
     
     private void registrarGCM() {
     	if (UtilGCM.isRegistrado(getApplicationContext())) {
             UtilGCM.desativa(getApplicationContext());
-            gcmAtivo = false;
+            setGcmAtivo(false);
             Toast.makeText(getApplicationContext(), "GCM desativado!", Toast.LENGTH_LONG).show();
         } else {
             UtilGCM.registrar(getApplicationContext());
-            gcmAtivo = true;
+            setGcmAtivo(true);
             Toast.makeText(getApplicationContext(), "GCM ativado!", Toast.LENGTH_LONG).show();
         }
-    }
-    
-    public void loadViewCadastro() {
-    	setContentView(R.layout.cadastro);
-    	
-    	//configurando o botao cancelar
-        btnCancelar = (Button)findViewById(R.id.btnCancelar);
-        btnCancelar.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				loadViewPrincipal();
-			}});
-        
-        //configurando o formuario de cadastro
-        txtNome = (EditText)findViewById(R.id.txtNome);
-        txtEndereco = (EditText)findViewById(R.id.txtEndereco);
-        txtTelefone = (EditText)findViewById(R.id.txtTelefone);
-        
-        //configurando o botao salvar
-        btnSalvar = (Button)findViewById(R.id.btnSalvar);
-        btnSalvar.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				salvarNotificacao();
-			}});
     }
     
     public void salvarNotificacao() {
@@ -102,7 +81,7 @@ public class ViewPrincipal extends Activity {
 		loadViewPrincipal();
     }
     
-    public void carregarNotificacoesSalvas(Context c) {
+    /*public void carregarNotificacoesSalvas(Context c) {
     	setContentView(R.layout.historico);
     	
     	btnVoltar = (Button)findViewById(R.id.btnVoltar);
@@ -129,5 +108,5 @@ public class ViewPrincipal extends Activity {
     			"Mensagem: "+ notificacao.getMensagem() + "\n"+ 
     			"Data: "+notificacao.getData_recebimento() +
     			"-------------------------");
-    }
+    }*/
 }

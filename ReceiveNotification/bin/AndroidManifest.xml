@@ -22,12 +22,26 @@
     <!-- O GCM requer uma conta do Google para sua utilização. -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- Mantém o processador dormindo quando uma mensagem é recebida. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <receiver
+            android:name="com.google.android.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="br.ufg.inf.integracao.receivenotification" />
+            </intent-filter>
+        </receiver>
+        
+        <service android:name="br.ufg.inf.integracao.receivenotification.GCMIntentService" />
+        
         <activity
             android:name="br.ufg.inf.integracao.receivenotification.views.ViewPrincipal"
             android:label="@string/app_name" >
@@ -49,8 +63,6 @@
             android:label="@string/title_activity_view_registrar"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-        
-        <service android:name="br.ufg.inf.integracao.receivenotification.service.GCMIntentService" />
     </application>
 
 </manifest>

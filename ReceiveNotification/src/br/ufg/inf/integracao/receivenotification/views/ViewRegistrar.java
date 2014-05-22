@@ -12,10 +12,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.ufg.inf.integracao.receivenotification.R;
+import br.ufg.inf.integracao.receivenotification.util.Consulta;
 import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -27,15 +30,20 @@ public class ViewRegistrar extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_registrar);
-		btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
+		btnRegistrar = (Button) findViewById(R.id.btnRegistrar2);
 		boolean isGCMAtivo = UtilGCM.isRegistrado(getApplicationContext());
 		
-		setComportamentoBtnRegistrar(isGCMAtivo);
+		btnRegistrar.setOnClickListener(new OnClickListener(){
+        	public void onClick(View v) {
+        		//ativaDesativaGCM(v);
+        		(new Consulta()).execute(null);
+        	}});
+		
+		//setComportamentoBtnRegistrar(isGCMAtivo);
 	}
 	
 	public void ativaDesativaGCM(View view) {
 		boolean isGCMAtivo;
-		
 		if (UtilGCM.isRegistrado(getApplicationContext())) {
 			UtilGCM.desativa(getApplicationContext());
 			isGCMAtivo = false;
@@ -48,17 +56,18 @@ public class ViewRegistrar extends Activity {
 	}
 	
 	private boolean registrarEnviarId() {
+		UtilGCM.desativa(getApplicationContext());
 		String registrationId = UtilGCM.registrar(getApplicationContext());
 		
 		try {
-			URL url = new URL("http://1.send-notification-4-android.appspot.com/");
+			URL url = new URL("http://1.send-notification-4-android.appspot.com/sendID");
 			HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
 			
-			conexao.setRequestMethod("POST");
+			conexao.setRequestMethod("GET");
 			conexao.setRequestProperty("Content-Type", "application/json");
 			conexao.setDoOutput(true);
 			
-			JSONObject objeto = new JSONObject();
+			/*JSONObject objeto = new JSONObject();
 			JSONObject dadosDispositivo = new JSONObject();
 			dadosDispositivo.put("usuario", registrationId);
 			dadosDispositivo.put("email", registrationId);
@@ -68,7 +77,7 @@ public class ViewRegistrar extends Activity {
 			DataOutputStream writer = new DataOutputStream(conexao.getOutputStream());
 			writer.writeBytes(objeto.toString());
 			writer.flush();
-			writer.close();
+			writer.close();*/
 			
 			
 			int responseCode = conexao.getResponseCode();
@@ -89,9 +98,10 @@ public class ViewRegistrar extends Activity {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
 		} catch (IOException e) {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
-		} catch (JSONException e) {
+		} 
+		/*catch (JSONException e) {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
-		}
+		}*/
 		
 		Toast.makeText(getApplicationContext(), "GCM ativado!", Toast.LENGTH_LONG).show();
 		return true;

@@ -10,5 +10,6 @@
     <string name="btnSalvar">Salvar</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnVoltar">Voltar</string>
+    <string name="btnRegistrar">Registrar</string>
 
 </resources>
