@@ -20,6 +20,7 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 	    		throws ServletException, IOException {
+    	doGet(req, resp);
     }
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -28,9 +29,14 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
         String email = request.getParameter("email");
         Date data = new Date();
         
-        if (registrationId == null)
-        	response.sendError(400);
-        else {
+        if (registrationId == null) {
+        	String resposta = request.getParameterMap().toString();
+            
+            response.setContentType("text/plain");
+            response.setHeader("Cache-Control", "no-cache");
+            response.getWriter().write(resposta);
+        	//response.sendError(400);
+        } else {
             final Usuario usuario = new Usuario();
             usuario.setNome(name);
             usuario.setRegistrationId(registrationId);

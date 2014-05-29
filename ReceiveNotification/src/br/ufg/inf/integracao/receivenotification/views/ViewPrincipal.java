@@ -4,6 +4,7 @@ package br.ufg.inf.integracao.receivenotification.views;
 import java.util.Date;
 import java.util.List;
 
+import br.ufg.inf.integracao.receivenotification.LoginActivity;
 import br.ufg.inf.integracao.receivenotification.R;
 import br.ufg.inf.integracao.receivenotification.model.Notificacao;
 import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
@@ -57,7 +58,7 @@ public class ViewPrincipal extends Activity {
         btnRegistrar.setOnClickListener(new OnClickListener(){
         	public void onClick(View v) {
         		//registrarGCM();
-        		Intent intent = new Intent(context, ViewRegistrar.class);
+        		Intent intent = new Intent(context, LoginActivity.class);
 				startActivity(intent);
         	}});
     }

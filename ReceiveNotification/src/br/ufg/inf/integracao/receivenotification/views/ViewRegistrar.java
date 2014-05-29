@@ -7,7 +7,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,10 +46,15 @@ public class ViewRegistrar extends Activity {
 		btnRegistrar.setOnClickListener(new OnClickListener(){
         	public void onClick(View v) {
         		//ativaDesativaGCM(v);
-        		(new Consulta()).execute(null);
+        		//postData();
+        		testeConsulta();
         	}});
 		
 		//setComportamentoBtnRegistrar(isGCMAtivo);
+	}
+	
+	public void testeConsulta() {
+		new Consulta().execute((String) null);
 	}
 	
 	public void ativaDesativaGCM(View view) {
@@ -66,19 +81,6 @@ public class ViewRegistrar extends Activity {
 			conexao.setRequestMethod("GET");
 			conexao.setRequestProperty("Content-Type", "application/json");
 			conexao.setDoOutput(true);
-			
-			/*JSONObject objeto = new JSONObject();
-			JSONObject dadosDispositivo = new JSONObject();
-			dadosDispositivo.put("usuario", registrationId);
-			dadosDispositivo.put("email", registrationId);
-			dadosDispositivo.put("id", registrationId);
-			objeto.put("data", dadosDispositivo);
-			
-			DataOutputStream writer = new DataOutputStream(conexao.getOutputStream());
-			writer.writeBytes(objeto.toString());
-			writer.flush();
-			writer.close();*/
-			
 			
 			int responseCode = conexao.getResponseCode();
             System.out.println("Codigo Resposta: " + responseCode);
