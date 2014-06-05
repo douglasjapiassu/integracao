@@ -26,6 +26,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
+        android:name="br.ufg.inf.integracao.receivenotification.ReceiveNotification"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -67,7 +68,11 @@
         <activity
             android:name="br.ufg.inf.integracao.receivenotification.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:parentActivityName="br.ufg.inf.integracao.receivenotification.views.ViewPrincipal">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="br.ufg.inf.integracao.receivenotification.ViewPrincipal" />
         </activity>
     </application>
 

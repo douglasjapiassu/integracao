@@ -158,12 +158,11 @@ public class NotificacaoMB implements Serializable {
 	 */
 	public void enviarNotificacao() {
 		if (Util.isTamanhoDaMensagemInvalido(notificacao.getMensagem())) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenção", "Mensagem deve ter entre 5 e 2048 caracteres."));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenï¿½ï¿½o", "Mensagem deve ter entre 5 e 2048 caracteres."));
 		} else {
 			EnviaNotificacaoGCM en = new EnviaNotificacaoGCM();
-			notificacao.setUsuarios(new UsuarioDAOObjectify().getAll());
-			String retorno = en.enviaNotificacaoGCM(notificacao);
-			addMessage("Atenção", retorno);
+			String retorno = en.enviaNotificacaoGCM(notificacao, new UsuarioDAOObjectify().getAll());
+			addMessage("Atenï¿½ï¿½o", retorno);
 			salvar();
 		}
 	}

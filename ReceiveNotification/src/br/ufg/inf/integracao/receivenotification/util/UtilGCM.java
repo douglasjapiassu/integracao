@@ -15,18 +15,16 @@ public class UtilGCM {
 	 * @param context
 	 * @return registrationId do dispositivo
 	 */
-	public static String registrar(Context context) {
+	public static void registrar(Context context, String senderID) {
 		GCMRegistrar.checkDevice(context);
 		GCMRegistrar.checkManifest(context);
 		final String registrationId = GCMRegistrar.getRegistrationId(context);
 		if (registrationId.equals("")) {
-			GCMRegistrar.register(context, SENDER_ID);
+			GCMRegistrar.register(context, senderID);
 			Log.i(TAG, "Serviço Registrado.");
 		} else {
 			Log.i(TAG, "Serviço ativo, id: " + registrationId);
 		}
-		
-		return registrationId;
 	}
 	
 	/**

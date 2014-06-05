@@ -1,31 +1,16 @@
 package br.ufg.inf.integracao.receivenotification.views;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import br.ufg.inf.integracao.receivenotification.R;
-import br.ufg.inf.integracao.receivenotification.util.Consulta;
+import br.ufg.inf.integracao.receivenotification.util.HTTPRequestServer;
 import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,30 +19,26 @@ import android.widget.Toast;
 
 public class ViewRegistrar extends Activity {
 	
-	private Button btnRegistrar;
+	private Button btnCadastrar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_registrar);
-		btnRegistrar = (Button) findViewById(R.id.btnRegistrar2);
-		boolean isGCMAtivo = UtilGCM.isRegistrado(getApplicationContext());
+		btnCadastrar = (Button) findViewById(R.id.btnCadastrar);
 		
-		btnRegistrar.setOnClickListener(new OnClickListener(){
+		btnCadastrar.setOnClickListener(new OnClickListener(){
         	public void onClick(View v) {
-        		//ativaDesativaGCM(v);
-        		//postData();
-        		testeConsulta();
+        		recuperarSenderID();
+        		ativaDesativaGCM();
         	}});
-		
-		//setComportamentoBtnRegistrar(isGCMAtivo);
 	}
 	
-	public void testeConsulta() {
-		new Consulta().execute((String) null);
+	public void recuperarSenderID() {
+		new HTTPRequestServer().execute((String) "recuperarSenderID");
 	}
 	
-	public void ativaDesativaGCM(View view) {
+	public void ativaDesativaGCM() {
 		boolean isGCMAtivo;
 		if (UtilGCM.isRegistrado(getApplicationContext())) {
 			UtilGCM.desativa(getApplicationContext());
@@ -72,7 +53,7 @@ public class ViewRegistrar extends Activity {
 	
 	private boolean registrarEnviarId() {
 		UtilGCM.desativa(getApplicationContext());
-		String registrationId = UtilGCM.registrar(getApplicationContext());
+		//String registrationId = UtilGCM.registrar(getApplicationContext());
 		
 		try {
 			URL url = new URL("http://1.send-notification-4-android.appspot.com/sendID");
@@ -111,7 +92,7 @@ public class ViewRegistrar extends Activity {
 	
 	private void setComportamentoBtnRegistrar(boolean isGCMAtivo) {
 		if (isGCMAtivo)
-			btnRegistrar.setClickable(false);
+			btnCadastrar.setClickable(false);
 	}
 
 }

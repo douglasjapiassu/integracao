@@ -21,12 +21,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+
+import br.ufg.inf.integracao.receivenotification.ReceiveNotification;
  
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
  
-public class Consulta extends AsyncTask<String, Void, Void> {
+public class HTTPRequestServer extends AsyncTask<String, Void, Void> {
 	
 	private final String URL = "http://1.send-notification-4-android.appspot.com/sendID";
 	private HttpClient httpClient; 
@@ -36,17 +38,18 @@ public class Consulta extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... params) {
     	if (params.length == 0)
     		return null;
-    	else if (params[0] == "recuperarDados")
-    		recuperarDados();
     	else if (params[0] == "registrar")
-    		sendID(params);
+    		registrar();
+    	else if (params[0] == "sendRegistrationID")
+    		sendRegistrationID(params);
+    	
+    	
         
         return null;
     }
     
-    private void recuperarDados() {
-    	String linha = "";
-    	
+    private void registrar() {
+    	String senderID = "";
     	try {
     		 
             httpClient = new DefaultHttpClient();
@@ -62,14 +65,15 @@ public class Consulta extends AsyncTask<String, Void, Void> {
                     httpResponse.getEntity().getContent()));
             StringBuffer sb = new StringBuffer("");
 
-            while ((linha = br.readLine()) != null) {
-                sb.append(linha);
+            while ((senderID = br.readLine()) != null) {
+                sb.append(senderID);
             }
 
             br.close();
             
-            linha = sb.toString();
-            System.out.println(linha);
+            senderID = sb.toString();
+            
+            UtilGCM.registrar(ReceiveNotification.getAppContext(), senderID);
 
         } catch (Exception e) {
             System.out.println(e);
@@ -77,21 +81,19 @@ public class Consulta extends AsyncTask<String, Void, Void> {
         }
     }
     
-    protected String addLocationToUrl(String url){
-        if(!url.endsWith("?"))
-            url += "?";
+    protected String getURL(){
+    	String urlGet = URL + "?";
 
         List<NameValuePair> params = new LinkedList<NameValuePair>();
-
-        params.add(new BasicNameValuePair("lat", "teste"));
+        params.add(new BasicNameValuePair("operacao", "recuperarSenderID"));
 
         String paramString = URLEncodedUtils.format(params, "utf-8");
 
-        url += paramString;
-        return url;
+        urlGet += paramString;
+        return urlGet;
     }
     
-    private void sendID(String... params) {
+    private void sendRegistrationID(String... params) {
 	    httpClient = new DefaultHttpClient();
 	    HttpPost httpPost = new HttpPost(URL);
 	    String regId = params[1];
@@ -126,13 +128,13 @@ public class Consulta extends AsyncTask<String, Void, Void> {
 			isGCMAtivo = false;
 			Toast.makeText(view.getContext(), "GCM desativado!", Toast.LENGTH_LONG).show();
 		} else {
-			isGCMAtivo = registrarEnviarId(view);
+			isGCMAtivo = enviarID(view);
 		}
 	}
 	
-	private boolean registrarEnviarId(View view) {
+	private boolean enviarID(View view) {
 		UtilGCM.desativa(view.getContext());
-		String registrationId = UtilGCM.registrar(view.getContext());
+		//String registrationId = UtilGCM.registrar(view.getContext());
 		
 		try {
 			URL url = new URL("http://1.send-notification-4-android.appspot.com/sendID");

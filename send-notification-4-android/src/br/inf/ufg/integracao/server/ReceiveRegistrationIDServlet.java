@@ -16,15 +16,12 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
     private UsuarioDAO dao = new UsuarioDAOObjectify();
+    private String senderID = "820609605026";
  
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
 	    		throws ServletException, IOException {
-    	doGet(req, resp);
-    }
-    
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String registrationId = request.getParameter("regId");
+    	String registrationId = request.getParameter("regId");
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         Date data = new Date();
@@ -45,7 +42,8 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
             
             Usuario ue = dao.findById(dao.save(usuario));
             
-            String resposta = 
+            String resposta = "Registro efetuado com sucesso! Id: " + ue.getId();
+            /*String resposta = 
             		"<html> " + 
             		"<head>" +
             		"	<title>Registration Id</title>" +
@@ -56,13 +54,18 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
             		"		Seu id de usuário é " + ue.getId() + " <br>" +
             		"		Seu identificador do aparelho é " + registrationId + ")</p>" +
             		"</body>" +
-            		"</html>";
+            		"</html>";*/
             
-            response.setContentType("text/html");
+            response.setContentType("text/plain");
             response.setHeader("Cache-Control", "no-cache");
             response.getWriter().write(resposta);
         }
-        
+    }
+    
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    	response.setContentType("text/plain");
+        response.setHeader("Cache-Control", "no-cache");
+        response.getWriter().write(senderID);
     }
  
 }

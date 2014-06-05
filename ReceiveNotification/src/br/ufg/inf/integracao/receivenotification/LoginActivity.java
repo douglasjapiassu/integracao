@@ -1,6 +1,7 @@
 package br.ufg.inf.integracao.receivenotification;
 
-import br.ufg.inf.integracao.receivenotification.util.Consulta;
+import br.ufg.inf.integracao.receivenotification.util.HTTPRequestServer;
+import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -36,7 +37,7 @@ public class LoginActivity extends Activity {
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private Consulta mAuthTask = null;
+	private HTTPRequestServer mAuthTask = null;
 
 	// Values for email and password at the time of the login attempt.
 	private String mNome;
@@ -138,16 +139,12 @@ public class LoginActivity extends Activity {
 		}
 
 		if (cancel) {
-			// There was an error; don't attempt login and focus the first
-			// form field with an error.
 			focusView.requestFocus();
 		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user login attempt.
 			mRegistroStatusMensagemView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new Consulta();
-			mAuthTask.execute((String) null);
+			mAuthTask = new HTTPRequestServer();
+			mAuthTask.execute((String) "registrar");
 		}
 	}
 

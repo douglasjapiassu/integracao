@@ -33,10 +33,10 @@ public final class R {
         public static final int TableRow1=0x7f080013;
         public static final int action_forgot_password=0x7f080017;
         public static final int action_settings=0x7f080018;
+        public static final int btnCadastrar=0x7f08000a;
         public static final int btnCancelar=0x7f080012;
         public static final int btnHistorico=0x7f080009;
         public static final int btnRegistrar=0x7f080008;
-        public static final int btnRegistrar2=0x7f08000a;
         public static final int btnSalvar=0x7f080011;
         public static final int btnVoltar=0x7f080016;
         public static final int email=0x7f080003;
