@@ -11,21 +11,33 @@ import android.widget.TextView;
  */
 public class ViewNotificacao extends Activity {
 
+	private String message;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// Definimos uma TextView para mostrar a mensagem na tela
-		TextView texto = new TextView(getApplicationContext());
+		
 		// Define como texto da TextView a mensagem recebida do GCM
-		texto.setText(getIntent().getStringExtra("mensagem_recebida"));
+		message = getIntent().getStringExtra("mensagem_recebida");
 		// Ajusta tamanho e cor da fonte
+		
+	}
+	
+	protected void onResume(){
+		super.onResume();
+		TextView texto = new TextView(getApplicationContext());
 		texto.setTextSize(20.0F);
 		texto.setTextColor(Color.BLACK);
+		texto.setText(message);
 		/*
 		 * Para tornar as coisas mais simples, mostraremos apenas uma TextView
 		 * na tela com o conteúdo da mensagem recebida da Nuvem através do GCM.
 		 */
 		setContentView(texto);
 	}
+	
+	
+	
 
 }
