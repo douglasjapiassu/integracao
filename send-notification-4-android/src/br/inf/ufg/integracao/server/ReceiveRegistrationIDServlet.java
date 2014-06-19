@@ -62,7 +62,7 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
     	dadosSistemaDAO = new DadosSistemaDAOObjectify();
     	List<DadosSistema> dadosSistema = dadosSistemaDAO.getAll();
     	if (dadosSistema.isEmpty()) {
-    		response.getWriter().write(0);
+    		response.getWriter().write("0");
     	} else {
     		senderID = dadosSistema.get(0).getSenderId();
     		response.getWriter().write(senderID);
