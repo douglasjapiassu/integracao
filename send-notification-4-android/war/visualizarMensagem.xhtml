@@ -7,12 +7,12 @@
     	<ui:define name="pageTitle"><h:outputText value="#{msg['page.title.editar.usuario']}" /></ui:define>
     	
     	<f:metadata>
-            <f:viewParam name="id" value="#{usuarioMB.idSelecionado}" />
-            <f:event type="preRenderView" listener="#{usuarioMB.editar}" />
+            <f:viewParam name="id" value="#{notificacaoMB.idSelecionado}" />
+            <f:event type="preRenderView" listener="#{notificacaoMB.visualizar}" />
         </f:metadata>
     	
 		<ui:define name="content">
-			<ui:include src="formUsuario.xhtml">
+			<ui:include src="formMensagem.xhtml">
 				<ui:param name="subtitle" value="#{msg['label.editar']}" />
 			</ui:include>
 		</ui:define>

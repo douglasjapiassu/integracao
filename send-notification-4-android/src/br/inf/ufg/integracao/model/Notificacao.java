@@ -41,5 +41,12 @@ public class Notificacao implements Serializable {
 	public void setDataEnvio(Date dataEnvio) {
 		this.dataEnvio = dataEnvio;
 	}
+	
+	public String getMensagemReduzida() {
+		if(mensagem.getBytes().length > 60)
+			return mensagem.substring(0, 60);
+		
+		return mensagem;
+	}
 
 }

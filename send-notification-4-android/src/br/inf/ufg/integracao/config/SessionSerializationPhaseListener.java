@@ -9,8 +9,6 @@ import javax.faces.event.PhaseListener;
 
 import org.apache.log4j.Logger;
 
-import br.inf.ufg.integracao.server.Util;
-
 /**
  * <code>PhaseListener</code> do JSF para forçar a serialização da sessão do App Engine.
  */

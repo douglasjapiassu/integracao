@@ -19,11 +19,6 @@
 			<h:form>
 				<h:dataTable value="#{usuarioMB.dmUsuarios}" var="usuario" styleClass="table table-hover">
 					<h:column>
-						<f:facet name="header">#</f:facet>
-						<h:outputText value="#{usuario.id}" />
-	                </h:column>
-	                
-					<h:column>
 						<f:facet name="header"><h:outputText value="#{msg['label.usuario.nome']}" /></f:facet>
 						<h:link outcome="editarUsuario" value="#{usuario.nome}" title="#{msg['label.editar']} #{usuario.nome}">
                 			<f:param name="id" value="#{usuario.id}" />

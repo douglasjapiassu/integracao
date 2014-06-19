@@ -1,0 +1,39 @@
+<ui:fragment xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form styleClass="form-horizontal">
+    	<fieldset>
+    		<legend><h3><h:outputText value="#{msg['label.dadosDoSistema']}" /> <small> <h:outputText value="#{subtitle}" /></small></h3></legend>
+    		<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.dadosSistema.apiKey']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText readonly="#{dadosSistemaMB.dadosSistema.id != null ? true : false}" value="#{dadosSistemaMB.dadosSistema.apiKey}" label="#{msg['label.dadosSistema.apiKey']}" required="true" styleClass="input-large">
+	    			</h:inputText>
+	    		</div>
+    		</div>
+    		
+    		<div class="control-group">
+	    		<label class="control-label"><h:outputText value="#{msg['label.dadosSistema.senderId']}" /></label>
+	    		<div class="controls">
+	    			<h:inputText readonly="#{dadosSistemaMB.dadosSistema.id != null ? true : false}" value="#{dadosSistemaMB.dadosSistema.senderId}" label="#{msg['label.dadosSistema.senderId']}" required="true" styleClass="input-large">
+	    			</h:inputText>
+	    		</div>
+	    	</div>
+    	</fieldset>
+    	
+    	<div class="control-group">
+    		<div class="controls">
+    			<h:commandButton value="#{msg['button.salvar']}" action="#{dadosSistemaMB.salvar}" styleClass="btn btn-success"/>
+    			<h:button value="#{msg['button.cancelar']}" outcome="listaUsuarios" styleClass="btn"/>
+    			<h:commandButton value="#{msg['button.excluir']}" action="#{dadosSistemaMB.remover}" rendered="#{dadosSistemaMB.dadosSistema.id != null}" immediate="true" styleClass="btn btn-danger"/>
+    		</div>
+    	</div>
+    </h:form>
+    
+    <h:panelGroup layout="block" class="alert alert-error" rendered="#{facesContext.validationFailed or not empty facesContext.messageList }">
+    	<h:messages showDetail="true" showSummary="false" />
+    </h:panelGroup>
+    
+</ui:fragment>

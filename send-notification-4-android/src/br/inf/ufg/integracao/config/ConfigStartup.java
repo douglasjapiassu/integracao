@@ -3,6 +3,7 @@ package br.inf.ufg.integracao.config;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import br.inf.ufg.integracao.model.DadosSistema;
 import br.inf.ufg.integracao.model.Notificacao;
 import br.inf.ufg.integracao.model.Usuario;
 
@@ -19,6 +20,7 @@ public class ConfigStartup implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		ObjectifyService.register(Usuario.class);
 		ObjectifyService.register(Notificacao.class);
+		ObjectifyService.register(DadosSistema.class);
 	}
 	
 	@Override

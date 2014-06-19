@@ -15,14 +15,24 @@ import org.json.JSONObject;
 import br.inf.ufg.integracao.model.Notificacao;
 import br.inf.ufg.integracao.model.Usuario;
 
-import com.google.android.gcm.server.Message;
-import com.google.android.gcm.server.Result;
-import com.google.android.gcm.server.Sender;
-
 public class EnviaNotificacaoGCM {
 	
+	/**
+	 * Responsavel por enviar uma notificacao para os dispositivos cadastrados,
+	 * atraves de uma requisicao HTTP.
+	 * 
+	 * @param notificacao
+	 * @param listaUsuarios
+	 * @return
+	 */
 	public String enviaNotificacaoGCM(Notificacao notificacao, List<Usuario> listaUsuarios) {
 		String retorno = "";
+		
+		if (listaUsuarios.isEmpty()) {
+			retorno = "Não há nenhum dispositivo cadastrado para receber as notificaççoes.";
+			return retorno;
+		}
+		
 		try {
 			String[] ids = new String[listaUsuarios.size()];
 			for (int i = 0; i < listaUsuarios.size(); i++) {
@@ -42,6 +52,8 @@ public class EnviaNotificacaoGCM {
 			data.put("mensagem", notificacao.getMensagem());
 			objeto.put("data", data);
 			objeto.put("registration_ids", ids);
+			objeto.put("delay_while_idle", true);
+			objeto.put("time_to_live", 86400);
 			
 			DataOutputStream writer = new DataOutputStream(conexao.getOutputStream());
 			writer.writeBytes(objeto.toString());
@@ -50,10 +62,9 @@ public class EnviaNotificacaoGCM {
 			
 			
 			int responseCode = conexao.getResponseCode();
-            System.out.println("Cï¿½digo Resposta: " + responseCode);
+            System.out.println("Codigo Resposta: " + responseCode);
  
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conexao.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conexao.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
  
@@ -61,9 +72,15 @@ public class EnviaNotificacaoGCM {
                 response.append(inputLine);
             }
             in.close();
- 
-            retorno = response.toString();
-            System.out.println(retorno);
+            
+            JSONObject retornoJson = new JSONObject(response.toString());
+            int sucesso = Integer.parseInt(retornoJson.get("success").toString());
+            
+			if(sucesso > 0) {
+            	retorno = "Mensagem enviada com sucesso para " + sucesso + " dispositivos.";
+            } else {
+            	retorno = "Ocorreu um erro e a mensagem não foi enviada para nenhum dispositivo.";
+            }
 		} catch (MalformedURLException e) {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
 		} catch (IOException e) {
@@ -73,29 +90,4 @@ public class EnviaNotificacaoGCM {
 		return retorno;
 	}
 	
-	public static void enviaNotificacaoGCMSender(){
-		Sender sender = new Sender(Util.API_KEY);
-		
-		Message message = new Message.Builder()
-		   .collapseKey("1")
-		   .timeToLive(3)
-		   .delayWhileIdle(true)
-		   .addData("mensagem","Mensagem enviada pelo GCM.")
-		   .build();
-		
-		Result result = null;
-		
-		//metodo send envia a mensagem e retorna a resposta da requisicao
-		try {
-			result = sender.send(message,Util.REG_ID, 1);
-		} catch (IOException e) {
-			System.err.println("Ocorreu o seguinte erro:\n"+e.getMessage());
-			e.printStackTrace();
-		}
-		
-		//Resposta da requisiï¿½ï¿½o
-		if (result != null)
-			System.out.println(result.toString());
-	}
-
 }

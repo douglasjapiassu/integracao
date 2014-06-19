@@ -29,7 +29,7 @@ public interface NotificacaoDAO {
 	 * @return true
 	 * @throws <code>RuntimeException</code> se algum problema ocorrer.
 	 */
-	Boolean remove(Notificacao usuario);
+	Boolean remove(Notificacao notificacao);
 	
 	/**
 	 * @param id filtro da pesquisa.

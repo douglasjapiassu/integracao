@@ -13,7 +13,6 @@ public class Util {
 	
 	public final static String GCM_URL = "https://android.googleapis.com/gcm/send";
 	public final static String API_KEY = "AIzaSyCOhgqMOv3HJ4aoBMbQwzScMZtzQT0vKbM";
-	public final static String REG_ID = "APA91bEhqcMRi_8-GkKhGtfQT7MjGUUmcuyX68g1mqjlWJZ2wcYeAd1C2WBBfp8ReLVFWhs1j0GsQZ1rKbb_0IGfMYfCh9-YHy6VGRFG3FSupLPbCOocyYj78oMe8hzyf60wtfgg6KnZ9E3W70SyF7LEFPamQmuO_w";
 	
 	public static boolean isTamanhoDaMensagemInvalido(String mensagem) {
 		byte[] bytesDaMensagem = null;

@@ -18,28 +18,23 @@
 			
 			<h:form>
 				<h:dataTable value="#{notificacaoMB.dmNotificacoes}" var="notificacao" styleClass="table table-hover">
-					<h:column>
-						<f:facet name="header">#</f:facet>
-						<h:outputText value="#{notificacao.id}" />
-	                </h:column>
-	                
-					<!-- <h:column>
-						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
-						<h:link outcome="editarUsuario" value="#{notificacao.mensagem}" title="#{msg['label.editar']} #{usuario.nome}">
-                			<f:param name="id" value="#{usuario.id}" />
-            			</h:link>
-	                </h:column> -->
-	                
-	                <h:column>
-						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
-						<h:outputText value="#{notificacao.mensagem}" />
-	                </h:column>
-	                
 	                <h:column>
 						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.dataEnvio']}" /></f:facet>
 						<h:outputText value="#{notificacao.dataEnvio}">
 							<f:convertDateTime locale="pt,BR" dateStyle="long" pattern="dd/MM/yyyy"></f:convertDateTime>
 						</h:outputText>
+	                </h:column>
+	                
+	                <!-- <h:column>
+						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
+						<h:outputText value="#{notificacao.mensagemReduzida}" />
+	                </h:column> -->
+	                
+	                <h:column>
+						<f:facet name="header"><h:outputText value="#{msg['label.notificacao.mensagem']}" /></f:facet>
+						<h:link outcome="visualizarMensagem" value="#{notificacao.mensagemReduzida}" title="#{msg['label.editar']} #{notificacao.mensagemReduzida}">
+                			<f:param name="id" value="#{notificacao.id}" />
+            			</h:link>
 	                </h:column>
 				</h:dataTable>
 				

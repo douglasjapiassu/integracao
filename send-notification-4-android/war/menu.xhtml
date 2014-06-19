@@ -5,7 +5,6 @@
     
 	<ul class="nav nav-list" style="padding-top: 15px;width: 140px">
 		<li><em><h:outputText value="#{msg['label.listas']}" /></em></li>
-		
 		<li class="#{usuarioMB.abaAtiva == 'listaUsuarios' ? 'active' : ''}">
 			<h:link outcome="listaUsuarios" value="#{msg['menu.usuarios']}"/>
 		</li>
@@ -13,6 +12,12 @@
 			<h:link outcome="listaNotificacoes" value="#{msg['menu.notificacoes']}"/>
 		</li>
 		<li class="divider"></li>
+		<li><em><h:outputText value="#{msg['label.dadosDoSistema']}" /></em></li>
+		<li class="#{usuarioMB.abaAtiva == 'dadosSistema' ? 'active' : ''}">
+			<h:link outcome="editarConfiguracao" value="#{msg['menu.configuracao']}"/>
+        </li>
+		<li class="divider"></li>
+		<li><em><h:outputText value="#{msg['label.notificacoes']}" /></em></li>
 		<li class="#{usuarioMB.abaAtiva == 'enviarNotificacao' ? 'active' : ''}">
 			<h:link outcome="enviarNotificacao" value="#{msg['menu.enviarNotificacao']}"/>
         </li>

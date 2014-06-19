@@ -23,6 +23,7 @@ import br.inf.ufg.integracao.dao.NotificacaoDAO;
 import br.inf.ufg.integracao.dao.NotificacaoDAOObjectify;
 import br.inf.ufg.integracao.dao.UsuarioDAOObjectify;
 import br.inf.ufg.integracao.model.Notificacao;
+import br.inf.ufg.integracao.model.Usuario;
 import br.inf.ufg.integracao.server.EnviaNotificacaoGCM;
 import br.inf.ufg.integracao.server.Util;
 
@@ -147,22 +148,23 @@ public class NotificacaoMB implements Serializable {
 	}
 	
 	/**
-	 * OperaÃ§Ã£o acionada pela tela de listagem, atravÃ©s do <code>commandButton</code> <strong>Atualizar</strong>. 
+	 * Operação acionada pela tela de listagem, através do <code>commandButton</code> <strong>Atualizar</strong>. 
 	 */
 	public void atualizar() {
 		preencherNotificacoes();
 	}
 	
 	/**
-	 * OperaÃ§Ã£o acionada pela tela de listagem, atravÃ©s do <code>commandButton</code> <strong>Atualizar</strong>. 
+	 * Operação acionada pela tela de listagem, através do <code>commandButton</code> <strong>Enviar</strong>. 
 	 */
 	public void enviarNotificacao() {
 		if (Util.isTamanhoDaMensagemInvalido(notificacao.getMensagem())) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Atenï¿½ï¿½o", "Mensagem deve ter entre 5 e 2048 caracteres."));
 		} else {
 			EnviaNotificacaoGCM en = new EnviaNotificacaoGCM();
-			String retorno = en.enviaNotificacaoGCM(notificacao, new UsuarioDAOObjectify().getAll());
-			addMessage("Atenï¿½ï¿½o", retorno);
+			List<Usuario> listaDeUsuarios = new UsuarioDAOObjectify().getAll();
+			String retorno = en.enviaNotificacaoGCM(notificacao, listaDeUsuarios);
+			addMessage("Atenção", retorno);
 			salvar();
 		}
 	}
@@ -176,15 +178,11 @@ public class NotificacaoMB implements Serializable {
 		Util.setAbaAtiva("listaNotificacoes");
 	}
 	
-	/**
-	 * AÃ§Ã£o executada quando a pÃ¡gina de ediÃ§Ã£o de mercadorias for carregada.
-	 */
 	public void visualizar() {
 		if (idSelecionado == null) {
 			return;
 		}
 		notificacao = notificacoes.get(idSelecionado);
-		Util.setAbaAtiva("visualizarMensagem");
 		log.debug("Pronto pra visualizar");
 	}
 	
