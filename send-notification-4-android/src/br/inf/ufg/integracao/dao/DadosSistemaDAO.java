@@ -5,7 +5,7 @@ import java.util.List;
 import br.inf.ufg.integracao.model.DadosSistema;
 
 /**
- * Contrato de persistência para a entidade <code>Usuario</code>. 
+ * Contrato de persistência para a entidade <code>DadosSistema</code>. 
  */
 public interface DadosSistemaDAO {
 

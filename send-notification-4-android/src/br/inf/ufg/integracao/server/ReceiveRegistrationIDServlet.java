@@ -2,21 +2,26 @@ package br.inf.ufg.integracao.server;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.inf.ufg.integracao.dao.DadosSistemaDAO;
+import br.inf.ufg.integracao.dao.DadosSistemaDAOObjectify;
 import br.inf.ufg.integracao.dao.UsuarioDAO;
 import br.inf.ufg.integracao.dao.UsuarioDAOObjectify;
+import br.inf.ufg.integracao.model.DadosSistema;
 import br.inf.ufg.integracao.model.Usuario;
 
 public class ReceiveRegistrationIDServlet extends HttpServlet {
  
     private static final long serialVersionUID = 1L;
-    private UsuarioDAO dao = new UsuarioDAOObjectify();
-    private String senderID = "820609605026";
+    private UsuarioDAO usuarioDAO = new UsuarioDAOObjectify();
+    private DadosSistemaDAO dadosSistemaDAO;
+    private String senderID;
  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -40,21 +45,9 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
             usuario.setEmail(email);
             usuario.setDataRegistro(data);
             
-            Usuario ue = dao.findById(dao.save(usuario));
+            Usuario usuarioP = usuarioDAO.findById(usuarioDAO.save(usuario));
             
-            String resposta = "Registro efetuado com sucesso! Id: " + ue.getId();
-            /*String resposta = 
-            		"<html> " + 
-            		"<head>" +
-            		"	<title>Registration Id</title>" +
-            		"</head>" + 
-            		"<body>" + 
-            		"	<h1> Bem-vindo ao Receive Notification </h1>" +
-            		"	<p> Voc� foi registrado no Servidor e agora passar� a receber nossas notifica��es. <br>" +
-            		"		Seu id de usuário é " + ue.getId() + " <br>" +
-            		"		Seu identificador do aparelho é " + registrationId + ")</p>" +
-            		"</body>" +
-            		"</html>";*/
+            String resposta = "Registro efetuado com sucesso! Id: " + usuarioP.getId();
             
             response.setContentType("text/plain");
             response.setHeader("Cache-Control", "no-cache");
@@ -64,8 +57,17 @@ public class ReceiveRegistrationIDServlet extends HttpServlet {
     
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     	response.setContentType("text/plain");
-        response.setHeader("Cache-Control", "no-cache");
-        response.getWriter().write(senderID);
+    	response.setHeader("Cache-Control", "no-cache");
+
+    	dadosSistemaDAO = new DadosSistemaDAOObjectify();
+    	List<DadosSistema> dadosSistema = dadosSistemaDAO.getAll();
+    	if (dadosSistema.isEmpty()) {
+    		response.getWriter().write(0);
+    	} else {
+    		senderID = dadosSistema.get(0).getSenderId();
+    		response.getWriter().write(senderID);
+    	}
+        
     }
  
 }

@@ -12,10 +12,15 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import br.inf.ufg.integracao.dao.DadosSistemaDAO;
+import br.inf.ufg.integracao.dao.DadosSistemaDAOObjectify;
+import br.inf.ufg.integracao.model.DadosSistema;
 import br.inf.ufg.integracao.model.Notificacao;
 import br.inf.ufg.integracao.model.Usuario;
 
 public class EnviaNotificacaoGCM {
+	
+	private DadosSistemaDAO dadosSistemaDAO = new DadosSistemaDAOObjectify();
 	
 	/**
 	 * Responsavel por enviar uma notificacao para os dispositivos cadastrados,
@@ -23,15 +28,30 @@ public class EnviaNotificacaoGCM {
 	 * 
 	 * @param notificacao
 	 * @param listaUsuarios
-	 * @return
+	 * @return resposta da requisição
 	 */
 	public String enviaNotificacaoGCM(Notificacao notificacao, List<Usuario> listaUsuarios) {
 		String retorno = "";
+		String apiKey = "";
 		
 		if (listaUsuarios.isEmpty()) {
-			retorno = "N�o h� nenhum dispositivo cadastrado para receber as notifica��oes.";
+			retorno = "Não há nenhum dispositivo cadastrado para receber as notificações.";
 			return retorno;
 		}
+		
+		dadosSistemaDAO = new DadosSistemaDAOObjectify();
+    	List<DadosSistema> dadosSistema = dadosSistemaDAO.getAll();
+    	if (dadosSistema.isEmpty()) {
+    		retorno = "É necessário cadastrar os dados do sistema no menu Configuração.";
+    		return retorno;
+    	} else {
+    		apiKey = dadosSistema.get(0).getApiKey();
+    		if ("".equalsIgnoreCase(apiKey.trim())) {
+    			retorno = "Api Key não preenchida. Impossível enviar a notificação.";
+    			return retorno;
+    		}
+    			
+    	}
 		
 		try {
 			String[] ids = new String[listaUsuarios.size()];
@@ -44,7 +64,7 @@ public class EnviaNotificacaoGCM {
 			
 			conexao.setRequestMethod("POST");
 			conexao.setRequestProperty("Content-Type", "application/json");
-			conexao.setRequestProperty("Authorization", "key=" + Util.API_KEY);
+			conexao.setRequestProperty("Authorization", "key=" + apiKey);
 			conexao.setDoOutput(true);
 			
 			JSONObject objeto = new JSONObject();
@@ -73,14 +93,19 @@ public class EnviaNotificacaoGCM {
             }
             in.close();
             
-            JSONObject retornoJson = new JSONObject(response.toString());
-            int sucesso = Integer.parseInt(retornoJson.get("success").toString());
-            
-			if(sucesso > 0) {
-            	retorno = "Mensagem enviada com sucesso para " + sucesso + " dispositivos.";
+            if(responseCode == 401) {
+            	retorno = "Não autorizado. Verifique se a API Key está correta.";
             } else {
-            	retorno = "Ocorreu um erro e a mensagem n�o foi enviada para nenhum dispositivo.";
+            	JSONObject retornoJson = new JSONObject(response.toString());
+                int sucesso = Integer.parseInt(retornoJson.get("success").toString());
+                if(sucesso > 0) {
+                	retorno = "Mensagem enviada com sucesso para " + sucesso + " dispositivo(s).";
+                } else {
+                	retorno = "Ocorreu um erro e a mensagem não foi enviada para nenhum dispositivo.";
+                }
             }
+            
+			
 		} catch (MalformedURLException e) {
 			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
 		} catch (IOException e) {

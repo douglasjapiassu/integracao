@@ -12,7 +12,6 @@ import br.inf.ufg.integracao.mb.UsuarioMB;
 public class Util {
 	
 	public final static String GCM_URL = "https://android.googleapis.com/gcm/send";
-	public final static String API_KEY = "AIzaSyCOhgqMOv3HJ4aoBMbQwzScMZtzQT0vKbM";
 	
 	public static boolean isTamanhoDaMensagemInvalido(String mensagem) {
 		byte[] bytesDaMensagem = null;

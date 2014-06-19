@@ -12,13 +12,7 @@ import br.inf.ufg.integracao.model.Usuario;
 /**
  * Implementa o contrato de persistência da entidade <code>Usuario</code>.
  * 
- * <p>
- *   Nessa aplicação resolvemos a persistência utilizando o Objectify, um framework de persistência para o App Engine.<br/>
- *   A proposta do Objetify é denifir uma API mais alto-nível para manipular dados no <code>DataStore</code> do App Engine.
- * </p>
- * 
  * @see br.inf.ufg.integracao.dao.UsuarioDAO
- * @see com.googlecode.objectify.ObjectifyService.
  * 
  */
 public class UsuarioDAOObjectify implements Serializable, UsuarioDAO {

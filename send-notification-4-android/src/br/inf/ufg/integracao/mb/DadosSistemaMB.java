@@ -5,21 +5,17 @@ import static javax.faces.context.FacesContext.getCurrentInstance;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 
 import org.apache.log4j.Logger;
 
 import br.inf.ufg.integracao.dao.DadosSistemaDAO;
 import br.inf.ufg.integracao.dao.DadosSistemaDAOObjectify;
 import br.inf.ufg.integracao.model.DadosSistema;
-import br.inf.ufg.integracao.model.Notificacao;
 import br.inf.ufg.integracao.server.Util;
 
 /**

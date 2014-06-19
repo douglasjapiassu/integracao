@@ -148,14 +148,14 @@ public class NotificacaoMB implements Serializable {
 	}
 	
 	/**
-	 * Operação acionada pela tela de listagem, através do <code>commandButton</code> <strong>Atualizar</strong>. 
+	 * Operaï¿½ï¿½o acionada pela tela de listagem, atravï¿½s do <code>commandButton</code> <strong>Atualizar</strong>. 
 	 */
 	public void atualizar() {
 		preencherNotificacoes();
 	}
 	
 	/**
-	 * Operação acionada pela tela de listagem, através do <code>commandButton</code> <strong>Enviar</strong>. 
+	 * Operaï¿½ï¿½o acionada pela tela de listagem, atravï¿½s do <code>commandButton</code> <strong>Enviar</strong>. 
 	 */
 	public void enviarNotificacao() {
 		if (Util.isTamanhoDaMensagemInvalido(notificacao.getMensagem())) {
@@ -164,8 +164,9 @@ public class NotificacaoMB implements Serializable {
 			EnviaNotificacaoGCM en = new EnviaNotificacaoGCM();
 			List<Usuario> listaDeUsuarios = new UsuarioDAOObjectify().getAll();
 			String retorno = en.enviaNotificacaoGCM(notificacao, listaDeUsuarios);
-			addMessage("Atenção", retorno);
-			salvar();
+			addMessage("AtenÃ§Ã£o", retorno);
+			if (retorno.contains("sucesso"))
+				salvar();
 		}
 	}
 	

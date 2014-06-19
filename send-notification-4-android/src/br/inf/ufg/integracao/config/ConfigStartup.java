@@ -10,9 +10,9 @@ import br.inf.ufg.integracao.model.Usuario;
 import com.googlecode.objectify.ObjectifyService;
 
 /**
- * Componente necessário para registrar no Objectify quais são as entidades que ele deve gerenciar.
+ * Componente necessario para registrar no Objectify quais são as entidades que ele deve gerenciar.
  * 
- * <p>Código executado durante a inicialização do aplicativo web.</p> 
+ * <p>Codigo executado durante a inicialização do aplicativo web.</p> 
  */
 public class ConfigStartup implements ServletContextListener {
 
