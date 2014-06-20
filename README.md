@@ -41,7 +41,7 @@ O projeto [mobile][2] deverá ser baixado no Eclipse para que consiga ser emulad
 
 #### Como utilizar
 
-Primeiramente, no projeto web, será necessário cadastrar as informações do projeto, no menu [Dados do Sistema - Configuração][4]. Feito isso, o nosso aplitativo android já poderá ser utilizado.
+Primeiramente, no projeto web, será necessário cadastrar as [informações do projeto][7], no menu [Dados do Sistema - Configuração][4]. Feito isso, o nosso aplitativo android já poderá ser utilizado.
 
 Ao abrir o aplicativo, temos 2 opções: Registrar e Histórico. Ao clicar em Registrar, o aplicativo irá solicitar seu nome e email. Quando clicar em Registrar, ele irá se comunicar com o aplicativo web para receber o *senderId*, que é necessário para fazer o registro no GCM.
 
@@ -63,3 +63,4 @@ Autor: Douglas Tavares de Azevedo Japiassu
 [4]:http://1.send-notification-4-android.appspot.com/editarConfiguracao.jsf
 [5]:http://1.send-notification-4-android.appspot.com/listaUsuarios.jsf
 [6]:http://1.send-notification-4-android.appspot.com/enviarNotificacao.jsf
+[7]:https://github.com/douglasjapiassu/integracao/blob/master/Configura%C3%A7%C3%B5es%20do%20App.rar
