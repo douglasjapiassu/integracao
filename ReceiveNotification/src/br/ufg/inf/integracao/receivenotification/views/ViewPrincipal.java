@@ -2,8 +2,8 @@ package br.ufg.inf.integracao.receivenotification.views;
 
 
 
-import br.ufg.inf.integracao.receivenotification.LoginActivity;
 import br.ufg.inf.integracao.receivenotification.R;
+import br.ufg.inf.integracao.receivenotification.model.Usuario;
 import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
 import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
 import android.app.Activity;
@@ -19,8 +19,12 @@ public class ViewPrincipal extends Activity {
 	Button btnRegistrar, btnHistorico;
 	DBAdapter dbAdapter;
 	
-    private boolean isGcmAtivo() {
-		return UtilGCM.isRegistrado(this);
+    private boolean isUsuarioRegistrado() {
+    	DBAdapter dbAdapter = new DBAdapter(getApplicationContext());
+    	
+    	Usuario usuario = dbAdapter.getUsuario();
+    	
+		return usuario.getIdentificador() != 0;
 	}
 
 	@Override
@@ -34,10 +38,12 @@ public class ViewPrincipal extends Activity {
     	setContentView(R.layout.activity_view_principal);
         final Context context = this;
         btnRegistrar = (Button) findViewById(R.id.btnRegistrar);
-        UtilGCM.desativa(getApplicationContext());
-        if (isGcmAtivo())
-        	btnRegistrar.setClickable(false);
-    	
+        
+        if (isUsuarioRegistrado()) {
+    		btnRegistrar.setClickable(false);
+    		btnRegistrar.setText("Registrado");
+    	}
+        
     	btnHistorico = (Button) findViewById(R.id.btnHistorico);
     	btnHistorico.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
@@ -48,8 +54,19 @@ public class ViewPrincipal extends Activity {
         
         btnRegistrar.setOnClickListener(new OnClickListener(){
         	public void onClick(View v) {
+        		UtilGCM.desativa(getApplicationContext());
         		Intent intent = new Intent(context, LoginActivity.class);
 				startActivity(intent);
         	}});
+    }
+    
+    @Override
+    protected void onResume() {
+    	super.onResume();
+    	if (isUsuarioRegistrado()) {
+    		btnRegistrar.setClickable(false);
+    		btnRegistrar.setText("Registrado!");
+    	}
+        	
     }
 }

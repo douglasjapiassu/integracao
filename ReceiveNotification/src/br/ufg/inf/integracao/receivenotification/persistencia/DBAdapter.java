@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.ufg.inf.integracao.receivenotification.model.Notificacao;
+import br.ufg.inf.integracao.receivenotification.model.Usuario;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,7 +14,8 @@ import android.database.sqlite.SQLiteDatabase;
 public class DBAdapter {
 	private SQLiteDatabase database;
 	private DBHelper dbHelper;
-	String[] colunas = new String[] { "IDENTIFICADOR", "MENSAGEM", "DATA_RECEBIMENTO", "DATA"};
+	String[] colunasNotificacoes = new String[] { "IDENTIFICADOR", "MENSAGEM", "DATA_RECEBIMENTO", "DATA"};
+	String[] colunasUsuario = new String[] { "IDENTIFICADOR", "NOME", "EMAIL", "DATA"};
 
 	public DBAdapter(Context context) {
 		dbHelper = new DBHelper(context);
@@ -21,7 +23,7 @@ public class DBAdapter {
 	}
 	
 	public List<Notificacao> getNotificacoes() {
-		Cursor cursor = database.query(dbHelper.nomeTable, colunas, "", null,null, null, null);
+		Cursor cursor = database.query(dbHelper.tableNotificacoes, colunasNotificacoes, "", null,null, null, null);
 		List<Notificacao> listaNotificacoes = construirNotificacaoPorCursor(cursor);
 		
 		return listaNotificacoes;
@@ -32,7 +34,7 @@ public class DBAdapter {
 		content.put("MENSAGEM", mensagem);
 		content.put("DATA_RECEBIMENTO", getLongDate(data_recebimento));
 		
-		long retorno = database.insert(dbHelper.nomeTable, null, content);
+		long retorno = database.insert(dbHelper.tableNotificacoes, null, content);
 	       
         if (retorno != -1)
                 return true;
@@ -55,14 +57,14 @@ public class DBAdapter {
 	
 	public Notificacao getNotificacaoPeloIdentificador (int identificador) {
 		String query = "IDENTIFICADOR = " +  identificador;
-		Cursor cursor = database.query(dbHelper.nomeTable, colunas, query, null,null, null, null);
+		Cursor cursor = database.query(dbHelper.tableNotificacoes, colunasNotificacoes, query, null,null, null, null);
 		
 		return getNotificacaoPeloCursor(cursor); 
 	}
 	
 	public void apagarNotificacao (int identificador){ 
 		String query = "IDENTIFICADOR = " +  identificador;
-        database.delete(dbHelper.nomeTable, query, null); 
+        database.delete(dbHelper.tableNotificacoes, query, null); 
 	}
 	
 	public static Long getLongDate(Date date) {
@@ -111,5 +113,65 @@ public class DBAdapter {
         
         return notificacoes;
     }
+	
+	public boolean salvarUsuario(String nome, String email) {
+		ContentValues content = new ContentValues();
+		content.put("IDENTIFICADOR", 1);
+		content.put("NOME", nome);
+		content.put("EMAIL", email);
+		
+		long retorno = database.insert(dbHelper.tableUsuarios, null, content);
+	       
+        if (retorno != -1)
+                return true;
+        else
+                return false;
+	}
+	
+	public Usuario getUsuario() {
+		String query = "IDENTIFICADOR = 1";
+		Cursor cursor = database.query(dbHelper.tableUsuarios, colunasUsuario, query, null,null, null, null);
+		Usuario usuario = construirUsuarioPorCursor(cursor);
+		
+		return usuario;
+	}
+	
+	private Usuario construirUsuarioPorCursor(Cursor cursor) {
+		if(cursor == null)
+            return null;
+
+		Usuario usuario = new Usuario();
+         
+        try {
+            if (cursor != null) {
+            	while (cursor.moveToNext()) {
+            		usuario = getUsuarioPeloCursor(cursor);
+            	}
+            }
+        } catch(RuntimeException e) {
+            throw new RuntimeException("(construirNotificacaoPorCursor) Erro ao acessar o cursor.");
+        } finally {
+        	cursor.close();
+        }
+        
+        return usuario;
+    }
+	
+	public Usuario getUsuarioPeloCursor (Cursor cursor) {
+		Usuario usuario = new Usuario();
+		
+		if (cursor != null) {
+			usuario.setIdentificador(cursor.getInt(cursor.getColumnIndex("IDENTIFICADOR")));
+			usuario.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
+			usuario.setEmail(cursor.getString(cursor.getColumnIndex("EMAIL")));
+        }
+		
+		return usuario;
+	}
+	
+	public void apagarUsuario (int identificador){ 
+		String query = "IDENTIFICADOR = " +  identificador;
+        database.delete(dbHelper.tableUsuarios, query, null); 
+	}
 
 }

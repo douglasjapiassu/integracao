@@ -28,6 +28,7 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
  
+@SuppressWarnings("unused")
 public class HTTPRequestServer extends AsyncTask<String, Void, Void> {
 	
 	private final String URL = "http://1.send-notification-4-android.appspot.com/sendID";
@@ -36,69 +37,17 @@ public class HTTPRequestServer extends AsyncTask<String, Void, Void> {
  
     @Override
     protected Void doInBackground(String... params) {
-    	if (params.length == 0)
-    		return null;
-    	else if (params[0] == "registrar")
-    		registrar();
-    	else if (params[0] == "sendRegistrationID")
-    		sendRegistrationID(params);
-    	
-    	
+		sendRegistrationID(params);
         
         return null;
-    }
-    
-    private void registrar() {
-    	String senderID = "";
-    	try {
-    		 
-            httpClient = new DefaultHttpClient();
-           
-            HttpGet requisicao = new HttpGet();
-            requisicao.setHeader("Content-Type",
-                    "text/plain; charset=utf-8");
-            requisicao.setURI(new URI(URL));
-            
-            httpResponse = httpClient.execute(requisicao);
-            
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    httpResponse.getEntity().getContent()));
-            StringBuffer sb = new StringBuffer("");
-
-            while ((senderID = br.readLine()) != null) {
-                sb.append(senderID);
-            }
-
-            br.close();
-            
-            senderID = sb.toString();
-            
-            UtilGCM.registrar(ReceiveNotification.getAppContext(), senderID);
-
-        } catch (Exception e) {
-            System.out.println(e);
-            System.out.println(e.getMessage());
-        }
-    }
-    
-    protected String getURL(){
-    	String urlGet = URL + "?";
-
-        List<NameValuePair> params = new LinkedList<NameValuePair>();
-        params.add(new BasicNameValuePair("operacao", "recuperarSenderID"));
-
-        String paramString = URLEncodedUtils.format(params, "utf-8");
-
-        urlGet += paramString;
-        return urlGet;
     }
     
     private void sendRegistrationID(String... params) {
 	    httpClient = new DefaultHttpClient();
 	    HttpPost httpPost = new HttpPost(URL);
-	    String regId = params[1];
-	    String name = params[2];
-	    String email = params[3];
+	    String regId = params[0];
+	    String name = params[1];
+	    String email = params[2];
 
 	    try {
 	        List<NameValuePair> parametros = new ArrayList<NameValuePair>(3);
@@ -113,63 +62,11 @@ public class HTTPRequestServer extends AsyncTask<String, Void, Void> {
 	        httpResponse = httpClient.execute(httpPost);
 	        
 	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
+	        System.err.println(e.getMessage());
 	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
+	    	System.err.println(e.getMessage());
 	    } catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
 	} 
-    
-    public void ativaDesativaGCM(View view) {
-		boolean isGCMAtivo = false;
-		if (UtilGCM.isRegistrado(view.getContext())) {
-			UtilGCM.desativa(view.getContext());
-			isGCMAtivo = false;
-			Toast.makeText(view.getContext(), "GCM desativado!", Toast.LENGTH_LONG).show();
-		} else {
-			isGCMAtivo = enviarID(view);
-		}
-	}
-	
-	private boolean enviarID(View view) {
-		UtilGCM.desativa(view.getContext());
-		//String registrationId = UtilGCM.registrar(view.getContext());
-		
-		try {
-			URL url = new URL("http://1.send-notification-4-android.appspot.com/sendID");
-			HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-			
-			conexao.setRequestMethod("GET");
-			conexao.setRequestProperty("Content-Type", "application/json");
-			conexao.setDoOutput(true);
-			
-			int responseCode = conexao.getResponseCode();
-            System.out.println("Codigo Resposta: " + responseCode);
- 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(conexao.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
- 
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
- 
-            System.out.println(response.toString());
-		} catch (MalformedURLException e) {
-			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
-		} catch (IOException e) {
-			System.err.println("Ocorreu o seguinte erro:\n" + e.getMessage());
-		} 
-		
-		Toast.makeText(view.getContext(), "GCM ativado!", Toast.LENGTH_LONG).show();
-		return true;
-	}
-	
-	/*private void setComportamentoBtnRegistrar(boolean isGCMAtivo) {
-		if (isGCMAtivo)
-			btnRegistrar.setClickable(false);
-	}*/
 }

@@ -1,17 +1,15 @@
 <resources>
 
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Registrar</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in_register"><b>Sign in</b> or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="action_forgot_password">Recover lost password</string>
-    <string name="login_progress_signing_in">Signing in&#8230;</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="prompt_name">Nome</string>
+    <string name="action_sign_in_register"><b>Registrar</b></string>
+    <string name="action_sign_in_short">Registrar</string>
+    <string name="login_progress_signing_in">Registrando&#8230;</string>
+    <string name="error_invalid_email">Email Inválido</string>
     <string name="erro_campo_obrigatorio">Campo obrigatório</string>
+    <string name="erro_nome_invalido">Nome inválido. Mínimo 5 caracteres.</string>
 
 </resources>

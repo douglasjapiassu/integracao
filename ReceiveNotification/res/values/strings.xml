@@ -3,10 +3,6 @@
 
     <string name="app_name">ReceiveNotification</string>
     <string name="action_settings">Opções</string>
-    <string name="lblNome">Nome:</string>
-    <string name="lblTelefone">Fone:</string>
-    <string name="lblEndereco">Endereço:</string>
-    <string name="lblContatos">Contatos:</string>
     <string name="btnSalvar">Salvar</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnVoltar">Voltar</string>

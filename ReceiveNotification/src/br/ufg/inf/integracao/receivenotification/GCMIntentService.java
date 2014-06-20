@@ -3,6 +3,8 @@ package br.ufg.inf.integracao.receivenotification;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import br.ufg.inf.integracao.receivenotification.model.Usuario;
+import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
 import br.ufg.inf.integracao.receivenotification.util.ExibeNotificacao;
 import br.ufg.inf.integracao.receivenotification.util.HTTPRequestServer;
 import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
@@ -12,7 +14,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 /**
  * Service responsável por tratar os eventos do GCM.
  * 
- * @author lucasfreitas
+ * @author Douglas Japiassu
  *
  */
 public class GCMIntentService extends GCMBaseIntentService {
@@ -27,7 +29,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String mensagem = "ID de registro no GCM: " + regId;
 		Log.i(UtilGCM.TAG, mensagem);
 		HTTPRequestServer requestServer = new HTTPRequestServer();
-		requestServer.execute("sendRegistrationID",regId,"nome","email");
+		DBAdapter dbAdapter = new DBAdapter(context);
+		Usuario usuario = dbAdapter.getUsuario();
+		requestServer.execute(regId, usuario.getNome(), usuario.getEmail());
 	}
 
 	/**

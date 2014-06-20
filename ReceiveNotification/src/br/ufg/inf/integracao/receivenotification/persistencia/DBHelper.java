@@ -9,7 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBHelper extends SQLiteOpenHelper{
 	private static final String nomeDB = "RN.db";
 	private static final int versaoDB = 1;
-	public final String nomeTable = "NOTIFICACOES";
+	public final String tableNotificacoes = "NOTIFICACOES";
+	public final String tableUsuarios = "USUARIO";
 	
 	
 	public DBHelper(Context context) {
@@ -18,20 +19,30 @@ public class DBHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String scriptCreateDB = 
-				"CREATE TABLE " + nomeTable + " (" +
+		String scriptCreateDBNotificacoes = 
+				"CREATE TABLE " + tableNotificacoes + " (" +
 				"IDENTIFICADOR integer primary key autoincrement," +
 				"MENSAGEM text not null," +
 				"DATA_RECEBIMENTO long not null," +
 				"DATA datetime default current_timestamp" +
 				");";
 		
-		db.execSQL(scriptCreateDB);
+		String scriptCreateDBUsuarios = 
+				"CREATE TABLE " + tableUsuarios + " (" +
+				"IDENTIFICADOR integer primary key autoincrement," +
+				"NOME text not null," +
+				"EMAIL not null," +
+				"DATA datetime default current_timestamp" +
+				");";
+		
+		db.execSQL(scriptCreateDBNotificacoes);
+		db.execSQL(scriptCreateDBUsuarios);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + nomeTable);
+		db.execSQL("DROP TABLE IF EXISTS " + tableNotificacoes);
+		db.execSQL("DROP TABLE IF EXISTS " + tableUsuarios);
         onCreate(db);
 	}
 

@@ -1,6 +1,16 @@
-package br.ufg.inf.integracao.receivenotification;
+package br.ufg.inf.integracao.receivenotification.views;
 
-import br.ufg.inf.integracao.receivenotification.util.HTTPRequestServer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URI;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import br.ufg.inf.integracao.receivenotification.R;
+import br.ufg.inf.integracao.receivenotification.ReceiveNotification;
+import br.ufg.inf.integracao.receivenotification.persistencia.DBAdapter;
 import br.ufg.inf.integracao.receivenotification.util.UtilGCM;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,7 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -22,30 +31,21 @@ import android.widget.TextView;
  * well.
  */
 public class LoginActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
-	/**
-	 * The default email to populate the email field with.
-	 */
 	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
 
 	/**
 	 * Keep track of the login task to ensure we can cancel it if requested.
 	 */
-	private HTTPRequestServer mAuthTask = null;
+	private LoginTask mLoginTask = null;
 
 	// Values for email and password at the time of the login attempt.
-	private String mNome;
 	private String mEmail;
+	private String mName;
 
 	// UI references.
-	private EditText mNomeView;
 	private EditText mEmailView;
+	private EditText mNameView;
 	private View mRegistrarFormView;
 	private View mStatusRegistroView;
 	private TextView mRegistroStatusMensagemView;
@@ -57,12 +57,12 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 
 		// Set up the login form.
-		mNome = getIntent().getStringExtra(EXTRA_EMAIL);
-		mNomeView = (EditText) findViewById(R.id.email);
-		mNomeView.setText(mNome);
+		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
+		mEmailView = (EditText) findViewById(R.id.email);
+		mEmailView.setText(mEmail);
 
-		mEmailView = (EditText) findViewById(R.id.password);
-		mEmailView
+		mNameView = (EditText) findViewById(R.id.name);
+		mNameView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView textView, int id,
@@ -88,53 +88,46 @@ public class LoginActivity extends Activity {
 				});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
-	}
-
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
+		if (mLoginTask != null) {
 			return;
 		}
 
 		// Reset errors.
-		mNomeView.setError(null);
 		mEmailView.setError(null);
+		mNameView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mNome = mNomeView.getText().toString();
 		mEmail = mEmailView.getText().toString();
+		mName = mNameView.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
 		// Check for a valid password.
-		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.erro_campo_obrigatorio));
-			focusView = mEmailView;
+		if (TextUtils.isEmpty(mName)) {
+			mNameView.setError(getString(R.string.erro_campo_obrigatorio));
+			focusView = mNameView;
 			cancel = true;
-		} else if (mEmail.length() < 4) {
-			mEmailView.setError(getString(R.string.erro_campo_obrigatorio));
-			focusView = mEmailView;
+		} else if (mName.length() < 4) {
+			mNameView.setError(getString(R.string.erro_nome_invalido));
+			focusView = mNameView;
 			cancel = true;
 		}
 
 		// Check for a valid email address.
-		if (TextUtils.isEmpty(mNome)) {
-			mNomeView.setError(getString(R.string.erro_campo_obrigatorio));
-			focusView = mNomeView;
+		if (TextUtils.isEmpty(mEmail)) {
+			mEmailView.setError(getString(R.string.erro_campo_obrigatorio));
+			focusView = mEmailView;
 			cancel = true;
-		} else if (!mNome.contains("@")) {
-			mNomeView.setError(getString(R.string.error_invalid_email));
-			focusView = mNomeView;
+		} else if (!mEmail.contains("@")) {
+			mEmailView.setError(getString(R.string.error_invalid_email));
+			focusView = mEmailView;
 			cancel = true;
 		}
 
@@ -143,8 +136,8 @@ public class LoginActivity extends Activity {
 		} else {
 			mRegistroStatusMensagemView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new HTTPRequestServer();
-			mAuthTask.execute((String) "registrar");
+			mLoginTask = new LoginTask();
+			mLoginTask.execute(mName, mEmail);
 		}
 	}
 
@@ -189,51 +182,69 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+	public class LoginTask extends AsyncTask<String, Void, Void> {
+		
+		private final String URL = "http://1.send-notification-4-android.appspot.com/sendID";
+		private HttpClient httpClient; 
+		private HttpResponse httpResponse;
+	 
+	    @Override
+	    protected Void doInBackground(String... params) {
+	    	DBAdapter dbAdapter = new DBAdapter(getApplicationContext());
+	    	dbAdapter.salvarUsuario(params[0], params[1]);
+	    	registrar();
+	        
+	        return null;
+	    }
+	    
+	    private void registrar() {
+	    	String senderID = "";
+	    	try {
+	    		 
+	            httpClient = new DefaultHttpClient();
+	           
+	            HttpGet requisicao = new HttpGet();
+	            requisicao.setHeader("Content-Type",
+	                    "text/plain; charset=utf-8");
+	            requisicao.setURI(new URI(URL));
+	            
+	            httpResponse = httpClient.execute(requisicao);
+	            
+	            BufferedReader br = new BufferedReader(new InputStreamReader(
+	                    httpResponse.getEntity().getContent()));
+	            StringBuffer sb = new StringBuffer("");
+
+	            while ((senderID = br.readLine()) != null) {
+	                sb.append(senderID);
+	            }
+
+	            br.close();
+	            
+	            senderID = sb.toString();
+	            
+	            if (senderID == "0") {
+	            	showProgress(false);
+	            	mRegistroStatusMensagemView.setText("Erro ao receber a configuração do servidor. Verifique com o administrador.");
+	            } else {
+	            	UtilGCM.registrar(ReceiveNotification.getAppContext(), senderID);
+	            }
+
+	        } catch (Exception e) {
+	            System.out.println(e);
+	            System.out.println(e.getMessage());
+	        }
+	    }
+	    
 		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mNome)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mEmail);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
+		protected void onPostExecute(Void result) {
+			mLoginTask = null;
 			showProgress(false);
-
-			if (success) {
-				finish();
-			} else {
-				mEmailView
-						.setError(getString(R.string.error_incorrect_password));
-				mEmailView.requestFocus();
-			}
+			finish();
 		}
-
+		
 		@Override
 		protected void onCancelled() {
-			mAuthTask = null;
+			mLoginTask = null;
 			showProgress(false);
 		}
 	}
